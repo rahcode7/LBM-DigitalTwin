@@ -78,6 +78,16 @@ For Matrix Question types, which we have 36 unique questions. As each question c
 |Multiple Choice (MC) | Exact Match | 78.07%
 |Matrix | Mean Absolute Deviation |83.45%
 
+Blockwise Matrix Evaluation Metrics
+
+| Question Type | Block Name                                             | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+|------------|--------------------------------------------------------|-------------------------:|-----------------:|----------------:|---------------------:|
+| Matrix     | False consensus                                        | 87.44%                   | 1                | 2,058           | 20.00%               |
+| Matrix     | Non-experimental heuristics and biases                 | 86.32%                   | 2                | 4,116           | 40.00%               |
+| Matrix     | Linda -no conjunction                                  | 83.24%                   | 1                | 1,029           | 10.00%               |
+| Matrix     | Linda-conjunction                                      | 81.57%                   | 1                | 1,029           | 10.00%               |
+| Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
+| Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
 These human numbers of test-retest accuracy can be used to compare with the LLM performance.
 
 ###  Dataset Biases
