@@ -88,6 +88,8 @@ Blockwise Matrix Evaluation Metrics
 | Matrix     | Linda-conjunction                                      | 81.57%                   | 1                | 1,029           | 10.00%               |
 | Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
 | Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
+
+
 These human numbers of test-retest accuracy can be used to compare with the LLM performance.
 
 ###  Dataset Biases
