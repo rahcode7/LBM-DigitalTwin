@@ -118,11 +118,87 @@ https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-the
 
 # Section 2 Modelling Strategy
 
+###### Train Test Splits
+- To measure generatization, we should split at the `participant_id` level
+with splits at 70/10/20 for train,validation and test set respectively.
+- Data Leakage at question level - Same set of question. Every single one of those 85 questions in Wave 4 is a direct repeat of a question they were already asked in Waves 1-3. The wave 4 question set should be excluded from the training dataset itself.
 
+###### Context Handling
+
+
+- Large context size - Summaries or how to handle full text
+- Prompt based compression techniques 
+    - LLMLingua
+- Base model -base, instruction tuned model ?
+
+###### Q&A Arrangenment
+
+
+###### Compressing techniques
+Larger model can compress input prompt and provide the input to the smalle
+
+
+
+
+###### Model Techniques
+
+
+###### Baseline Model
+Baseline model will be a 0 shot version of the model we choose.
+
+###### Supervised Fine Tuning (SFT)
+Why ? 
+
+
+###### Base model vs instruction tuned 
+
+
+###### Objective Function
+- Loss Function - Cross Entropy Loss 
+- Exclude Demographic data for model trianing - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. How to implement, mask these token as -100
+
+###### Key Hyperparameters
+
+
+
+###### A good candidate model - RLVR
+As the answers have a fixed deterministic range, we can reward the model whose outputs are more closer to actual values compared to whose answer are further away. In a way it will help the SFT model to learn latent 
+
+
+
+###### Risk and Mitigations
+SFT Fine Tune model stops learning human behavior and memorizes.
+
+
+
+
+
+###### Data Pipeline
+Input Features
 
 # Section 3 Evaluation
 # Section 4 Business Application 
 Text write up
 # Section 5 Long run maintenance 
-Text write up 
+
+###### Model Artifacts 
+Following artifacts should be maintained for measuring model performance,debugging purposes.
+- Prompt Registry
+- Prediction Tags - Tag every predictin of the model with prompt version,model version ID (multiple model IDs in case of cascaded models like summarizer model id + SFT/RL model id)
+
+###### Measuring model drifts
+
+
+###### Governance of the model 
+
+###### Model Retrainign Trigger Requirements
+
+Adding a new versioned model can depend upon
+- If the psycology metrics of a testing version improves compared to the current production model
+- Or
+- Current model degrades in performance accuracy
+
+
+
 # Section 6 Modelling Codes
+# Start SFT plan
