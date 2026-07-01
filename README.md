@@ -60,10 +60,8 @@ Total Question To evaluate after dropping empty in either wave : 119364
 |  Question Type   | Number of Questions 
 |-----|-----| 
 |Multiple Choice (MC) | 109,074 | 
-|Matrix | 10,290 |
-|Total | 119,364 |
-
-
+|Matrix | 10,290
+|Total | 119,364
 As Evaluation will differ by Question Types as they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical.
 
 For MC Question types, I compute the exact match and then get the % of questions correctly answer by participants.
@@ -78,6 +76,7 @@ For Matrix Question types, which we have 36 unique questions. As each question c
 |Multiple Choice (MC) | Exact Match | 78.07%
 |Matrix | Mean Absolute Deviation |83.45%
 
+
 Blockwise Matrix Evaluation Metrics
 
 | Question Type | Block Name                                             | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
@@ -88,6 +87,9 @@ Blockwise Matrix Evaluation Metrics
 | Matrix     | Linda-conjunction                                      | 81.57%                   | 1                | 1,029           | 10.00%               |
 | Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
 | Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
+
+
+
 
 
 These human numbers of test-retest accuracy can be used to compare with the LLM performance.
@@ -117,10 +119,10 @@ https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-the
 # Section 2 Modelling Strategy
 
 
+
 # Section 3 Evaluation
 # Section 4 Business Application 
 Text write up
 # Section 5 Long run maintenance 
 Text write up 
 # Section 6 Modelling Codes
-SFT etc code to write
