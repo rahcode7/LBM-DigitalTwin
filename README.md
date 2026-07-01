@@ -60,8 +60,10 @@ Total Question To evaluate after dropping empty in either wave : 119364
 |  Question Type   | Number of Questions 
 |-----|-----| 
 |Multiple Choice (MC) | 109,074 | 
-|Matrix | 10,290
-|Total | 119,364
+|Matrix | 10,290 |
+|Total | 119,364 |
+
+
 As Evaluation will differ by Question Types as they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical.
 
 For MC Question types, I compute the exact match and then get the % of questions correctly answer by participants.
