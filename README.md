@@ -118,10 +118,6 @@ https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-the
 
 # Section 2 Modelling Strategy
 
-###### Train Test Splits
-- To measure generatization, we should split at the `participant_id` level
-with splits at 70/10/20 for train,validation and test set respectively.
-- Data Leakage at question level - Same set of question. Every single one of those 85 questions in Wave 4 is a direct repeat of a question they were already asked in Waves 1-3. The wave 4 question set should be excluded from the training dataset itself.
 
 ###### Context Handling
 
@@ -140,28 +136,29 @@ Larger model can compress input prompt and provide the input to the smalle
 
 
 
-###### Model Techniques
+### Model Techniques
 
 
-###### Baseline Model
+#### Baseline Model
 Baseline model will be a 0 shot version of the model we choose.
 
-###### Supervised Fine Tuning (SFT)
+#### Supervised Fine Tuning (SFT)
 Why ? 
 
 
-###### Base model vs instruction tuned 
+#### Base model vs instruction tuned 
 
 
-###### Objective Function
-- Loss Function - Cross Entropy Loss 
-- Exclude Demographic data for model trianing - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. How to implement, mask these token as -100
+#### Objective Function
+- **Loss Function** - Cross Entropy Loss 
+- **Target Variable** - `wave4_Q_wave4_A` column from `Wave Split` folder
+- **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these token as -100.
 
-###### Key Hyperparameters
+#### Key Hyperparameters
 
 
 
-###### A good candidate model - RLVR
+###### Improving SFT Models with RLVR
 As the answers have a fixed deterministic range, we can reward the model whose outputs are more closer to actual values compared to whose answer are further away. In a way it will help the SFT model to learn latent 
 
 
@@ -177,6 +174,74 @@ SFT Fine Tune model stops learning human behavior and memorizes.
 Input Features
 
 # Section 3 Evaluation
+#### Evaluation Metrics 
+
+1. **Accuracy** As we have 2 Question types of Multiple choice (MC) and Matrix questions, 
+    we can compute Exact Match Rate and Mean Absolute Deviation accuracy metrics of the digital twin model vs Wave 4 ground truth answers. 
+2. **Correlation (For Matrix Type Questions)**
+    - For Matrix type questions having likert scales, we can measure pearson correlation.
+    - It should be measure for the following sets - 
+        - Set 1. The correlation between human's answers in Wave1-3 vs Wave4 answer to check their agreement with themselves.
+        - Set 2. The correlation between human's answers in Wave 4 vs Digital Twin model.
+
+3. **Cohen's Kappa (For Multiple Choice Questions)**
+    We should also measure the agreement between the following sets  
+    - Set 1. The correlation between human's answers in Wave1-3 vs Wave4 answer to check their agreement with themselves.
+    - Set 2 . The correlation between human's answers in Wave 4 vs Digital Twin model.
+    - Multiple choice questions have 2 types of answers, ordered or unordered.
+        - Type 1 : Ordinal Answers - In the example Question we have order in the range from I am so sad or unhappy that I can't stand it -> I don't feel sad. 
+           
+           Metric :  Cohen's Weighted Kappa
+           
+
+         ```
+        "QuestionID": "QID126",
+        "QuestionText": "",
+        "QuestionType": "MC",
+        "Options": [
+        "I don't feel sad",
+        "I feel sad",
+        "I am sad all the time and I can't snap out of it",
+        "I am so sad or unhappy that I can't stand it"
+        ]
+        ```
+            
+        - Type 2 : Unordered Answers
+        In the example question, its a yes or no type of question.
+
+          Metric :  Cohen's Kappa
+         Range  : -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
+
+        ```
+         "QuestionID": "QID9_10",
+        "QuestionText": "Please consider the following product category: Lunchmeat - Sliced - Refrigerated. Suppose you are in a grocery store, and you see the following product in that category: Oscar Mayer Chopped Ham & Water product Deli Lunch Meat, 16 Oz Package. The product is priced at: $0.87. Would you or would you not purchase this product?",
+        "QuestionType": "MC",
+        "Options": [
+        "Yes, I would purchase the product",
+        "No, I would not purchase the product"
+        ]
+        ```
+
+#### Performance Ceiling  
+The test-retest reliability metrics can serve as the ceiling criteria for benchmarking the models. For the 2 question types Multiple Choice and Matrix type question, we can ......
+
+#### Baseline to beat 
+A good baseline could be randomly guessing the answers as the base model should be able to beat if it does truly learn something from the dataset.
+
+#### Data Leakage
+- **Persona summaries and usage of `Full personal` folder** - 
+  -  For the fields `persona_text`, the dataset information states that 
+    ```Complete survey responses in text format, including all questions and answers. For questions that appear in both waves 1-3 and wave 4, the wave 4 responses are used.```
+    This field contains the wave4 responses. As waves 1-3 is the data to be used for training, and to prevent future data leakage, we can't utilize this field.  
+    The corresponding `persona_summary` seems to be generated from the full dataset of all 4 waves combined. If we plan to use the summary of wave 1-3, this field doesn't seem to be reliable.
+    We need to generate our own summaries if needed for training from the Wave Split folder's `wave1_3_persona_text` or `wave1_3_persona_json`
+
+- **Target Leakage** - If we split the dataset by rows, we will have situation where for a given person and a question, the training dataset has seen their wave 1-3 answer and will memorize and predict the same answer in wave4 which is from future time frame.
+
+#### Train Test Splits
+- To measure generatization, we should split at the `participant_id` level to prevent target leakage. The splits I am going with is splits at 70/10/20 for train,validation and test set respectively.
+
+
 # Section 4 Business Application 
 Text write up
 # Section 5 Long run maintenance 
