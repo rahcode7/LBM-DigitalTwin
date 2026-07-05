@@ -112,9 +112,6 @@ Next steps
 1. Think removing poor questions 
 
 
-###### References
-https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them
-
 
 # Section 2 Modelling Strategy
 
@@ -126,6 +123,8 @@ https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-the
 - Prompt based compression techniques 
     - LLMLingua
 - Base model -base, instruction tuned model ?
+
+##### Sampling Strategy for context window
 
 ###### Q&A Arrangenment
 
@@ -167,11 +166,111 @@ As the answers have a fixed deterministic range, we can reward the model whose o
 SFT Fine Tune model stops learning human behavior and memorizes.
 
 
+### Executing Models
+
+#### Prerequisites
+```
+# Get Pip
+sudo apt update && sudo apt install python3-pip -y
+
+# Install Torch
+nvidia-smi
+
+# Cuda CPU
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# Cuda 12.6
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
+# Cuda 13
+pip3 install torch torchvision
+
+# Install Transformers
+pip install transformers
+
+# Other packages
+pip install accelerate wandb peft trl==0.9.6
+
+# Wandb Set up 
+wandb login 
+API Key ce18e8ae96d72cd78a7a54de441e9657bc0a913d
+
+```
+
+##### Sampling Technique
 
 
+##### Current Sampled dataset statstics
+- Train 80 personas * 50 Questions = 4000 training rows
+- Val 10 personas * 50 Questions = 500 validation rows
+- Test 10 personas * All Questions from wave 4 
 
-###### Data Pipeline
-Input Features
+#### Step 1 Prepare
+```
+python src/models/data-prep.py
+```
+
+#### Step 2 Train Model
+
+
+##### SFT Fine Tuned Script to run
+Train on Wave 1-3 dataset 
+```
+cd lbm
+
+export MODEL_DIR='qwen3-0.6b-sft'
+rm -rf checkpoints/$MODEL_DIR
+mkdir checkpoints checkpoints/$MODEL_DIR  checkpoints/$MODEL_DIR/logs
+
+export DATA_DIR='datasets/datasplits'
+mkdir datasets/datasplits
+mkdir datasets/results datasets/results/$MODEL_DIR
+
+accelerate launch --num_processes 1 src/models/train.py \
+    --train_data_path ""$DATA_DIR"/train_10P_5Q.jsonl" \
+    --val_data_path "datasets/datasplits/val_1P_5Q.jsonl" \
+    --output_dir "checkpoints/$MODEL_DIR" \
+    --model_id "Qwen/Qwen3-0.6B" \
+    --batch_size 1 \
+    --grad_accum 4 \
+    --epochs 1 \
+    --learning_rate 2e-5 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --wandb_project "LBM-twin-models" \
+    --wandb_run_name "$MODEL_DIR"
+
+
+```
+
+##### Step 3 Inference
+Inference on Wave 4 dataset of unseen persona
+
+```
+cd lbm
+MODEL_DIR = 'qwen3-0.6b-sft'
+export DATA_DIR='datasets/datasplits'
+mkdir datasets/results datasets/results/$MODEL_DIR
+
+python src/models/inference.py \
+    --adapter_path "checkpoints/$MODEL_DIR/final_sft_adapter" \
+    --test_data_path "$DATA_DIR/test_1P_5Q.jsonl" \
+    --output_file "datasets/results/$MODEL_DIR/predictions.jsonl" \
+    --batch_size 1
+```
+
+#### Step 4 Evaluate Metrics
+
+```
+cd lbm
+export MODEL_DIR='qwen3-0.6b-sft'
+python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predictions.jsonl" --metrics_path datasets/results/$MODEL_DIR/metrics.json
+```
+
+**Final Metrics Report**
+- File Path - datasets/results/$MODEL_DIR
+- File Name - metrics.json
+
 
 # Section 3 Evaluation
 #### Evaluation Metrics 
@@ -267,3 +366,23 @@ Adding a new versioned model can depend upon
 
 # Section 6 Modelling Codes
 # Start SFT plan
+
+
+###### References
+https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them
+
+https://numiqo.com/tutorial/cohens-kappa
+
+https://arxiv.org/pdf/2606.05336
+
+https://github.com/microsoft/LLMLingua
+
+
+
+#### Todos/ Next Steps
+**Training script**
+-  Dynamically sample number of personas and questions per persona for train/test/validation sets.
+
+** Context Processing**
+1. Before preparing the final prompt, Descriptive blocks should be appended to the corresponding questions and then added to the context.
+2. Waves numbers (1,2,3) can be added to separate the set of questions of different waves as they represent different period of time.
