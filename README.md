@@ -16,13 +16,6 @@ Dataset Link - https://huggingface.co/datasets/LLM-Digital-Twin/Twin-2K-500
   
 ### Dataset Statistics - Wave Split Dataset
 
-###### Token statistics
-- Why ? To help decide which model to choose in terms of context length.
-- Full Persona - For summary text of a persona profile, maximum of 3,061 words and average of 2,014 words, can be approximated as X tokens based on 1 token = 3/4 word 
-- Wave Dataset - Answer are around similar length for wave1-3 and wave 4 and are around 6320 words.
-
-
-
 ### Analysis of Q&A of Wave 1 to Wave 3
 
 I analayzed the Wave 1 to Wave 3 Q&A from the `wave1_3_persona_json` by expanding the json format column from the `wave_splits `dataset which is at persona or user level to each Q&A answer by each user. 
@@ -234,6 +227,14 @@ For these questions, I subset their QuestionId from the `question_catalog.json`.
 I report overall test-retest accuracy number as 83.36% between Wave13 and Wave14 answers.
 
 Note - I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
+
+
+
+### Token statistics
+- To help decide which model to choose in terms of context length.
+- Full Persona - For summary text of a persona profile, maximum of 3,061 words and average of 2,014 words, can be approximated as X tokens based on 1 token = 3/4 word 
+- Wave Dataset - Answer are around similar length for wave1-3 and wave 4 and are around 6320 words.
+
 
 ###  Dataset Biases
 
