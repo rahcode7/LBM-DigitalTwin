@@ -131,7 +131,7 @@ The statistics of the dataset by quesion type is as following
 |Matrix | 10,290
 |Total | 119,364
 
-#### Step 2. Evaluation Methodology
+#### Step 2. Evaluation Methodology and Results
 
 As Evaluation will differ by Question Types because they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical. 
 
@@ -141,51 +141,101 @@ Author Evaluation Metric Definition
  ```
 
 As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in following ways
-- MC(Multiple Choice) Question type - It can be binary or range of answers. 
+
+
+#### **MC(Multiple Choice) Question type**  
+
+- It can be binary or range of answers. 
     - For binary questions, I consider the answer as correct and score of 1 if the Wave4 answer exact match of Wave1-3 Answer else its a score of 0.
     - For MC Question 
 
-- For Matrix Question types, which we have 36 unique questions. Out of them, 23 questions are likert scale and 13 bipolar.For these questions, I subset their QuestionId from the `question_catalog.json`. I then used their `Columns` column and convert them to likert numerical scales. Then I compute the Absolute deviation between the ground truth's number and predicted answers's and divide by range of possible answer,similar to being reported by authors as mentioned above.
+- Evaluation Results for Multiple Choice Questions
+    | Question Type | Metric | Test-Retest Accuracy  | Number of Rows | Number of Unique Qs
+    |------ | ----- | ------ | ----- |----- | 
+    |Multiple Choice (MC) - Binary |  Exact Match | **83.27%** | 92,610 | 77
+    |Multiple Choice (MC) - Ordinary |  Mean Absolute Deviation | **83.80%** | 16,464 | 98 
+
+- BlockWise Evaluation Metrics (Multiple Choice (MC) - Ordinary)
+
+    | Block Name | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    |------------|-------------------------:|-----------------:|----------------:|---------------------:|
+    | WTA/WTP Thaler - WTP noncertainty | 93.05% | 1 | 673 | 4.09% |
+    | WTA/WTP Thaler problem - WTP certainty | 89.98% | 1 | 712 | 4.32% |
+    | Outcome bias - success | 88.58% | 1 | 1,052 | 6.39% |
+    | Proportion dominance 1C | 87.83% | 1 | 651 | 3.95% |
+    | Proportion dominance 1B | 86.72% | 1 | 672 | 4.08% |
+    | Proportion dominance 2B | 85.80% | 1 | 672 | 4.08% |
+    | Proportion dominance 2C | 85.68% | 1 | 651 | 3.95% |
+    | Proportion dominance 1A | 85.54% | 1 | 735 | 4.46% |
+    | Proportion dominance 2A | 85.31% | 1 | 735 | 4.46% |
+    | Myside German | 84.77% | 1 | 1,043 | 6.34% |
+    | WTA/WTP Thaler problem - WTA certainty | 84.50% | 1 | 673 | 4.09% |
+    | Myside Ford | 84.35% | 1 | 1,015 | 6.16% |
+    | Outcome bias - failure | 84.01% | 1 | 1,006 | 6.11% |
+    | Non-experimental heuristics and biases | 80.58% | 1 | 2,058 | 12.50% |
+    | Disease - gain | 80.54% | 1 | 1,003 | 6.09% |
+    | Less is More Gamble A | 80.20% | 1 | 735 | 4.46% |
+    | Disease-loss | 80.02% | 1 | 1,055 | 6.41% |
+    | Less is More Gamble C | 75.73% | 1 | 651 | 3.95% |
+    | Less is More Gamble B | 75.37% | 1 | 672 | 4.08% |
 
 
+-  BlockWise Evaluation Metrics (Multiple Choice (MC) - Ordinary)
+    
+    | Block Name | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    |------------|-------------------------:|-----------------:|----------------:|---------------------:|
+    | Anchoring - redwood low | 93.80% | 1 | 1,049 | 1.13% |
+    | Product Preferences - Pricing | 83.89% | 40 | 82,320 | 88.89% |
+    | Absolute vs. relative - calculator | 80.89% | 1 | 1,031 | 1.11% |
+    | Anchoring - African countries high | 80.78% | 1 | 1,056 | 1.14% |
+    | Anchoring - African countries low | 79.44% | 1 | 1,002 | 1.08% |
+    | Anchoring - redwood high | 77.70% | 1 | 1,009 | 1.09% |
+    | Absolute vs. relative - jacket | 77.41% | 1 | 1,027 | 1.11% |
+    | Allais Form 1 | 77.07% | 1 | 1,051 | 1.13% |
+    | Non-experimental heuristics and biases | 72.16% | 1 | 2,058 | 2.22% |
+    | Allais Form 2 | 70.90% | 1 | 1,007 | 1.09% |
 
-| Question Type | Metric | Accuracy
-|------ | ----- | ------
-|Multiple Choice (MC) | Exact Match | 78.07%
-|Matrix | Mean Absolute Deviation |83.45%
 
+#### **Matrix Question type**  
 
-Blockwise Matrix Evaluation Metrics
+- It has 36 unique questions. Out of them, 23 questions are likert scale and 13 bipolar.
+As bipolar is also a range of answers as mentioned in the definiton, I considered them same as likert scale.
+For these questions, I subset their QuestionId from the `question_catalog.json`. I then used their `Columns` column and convert them to likert numerical scales. Then I compute the Absolute deviation between the ground truth's number and predicted answers's and divide by range of possible answer,similar to being reported by authors as mentioned above.
+    -  As there could be multiple Matrix Questions together in a list,for each
+        - Compute score for item i ` 1 - abs( ground_truth_likert_scale_number - predicted_likert_scale_number)/ `
+        - Take average of this score for all the items in the list diving by the number of Questions in the list
 
-| Question Type | Block Name                                             | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
-|------------|--------------------------------------------------------|-------------------------:|-----------------:|----------------:|---------------------:|
-| Matrix     | False consensus                                        | 87.44%                   | 1                | 2,058           | 20.00%               |
-| Matrix     | Non-experimental heuristics and biases                 | 86.32%                   | 2                | 4,116           | 40.00%               |
-| Matrix     | Linda -no conjunction                                  | 83.24%                   | 1                | 1,029           | 10.00%               |
-| Matrix     | Linda-conjunction                                      | 81.57%                   | 1                | 1,029           | 10.00%               |
-| Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
-| Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
+- Evaluation Results for Matrix Questions
+    | Question Type | Metric | Test-Retest Accuracy | Number of Rows | Number of Unique Qs
+    |------ | ----- | ------ | ------- | ----- |
+    |Matrix | Mean Absolute Deviation | **83.45%** | 10290 | 36
 
-I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
+- Blockwise Matrix Evaluation Metrics
+
+    | Question Type | Block Name                                             | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    |------------|--------------------------------------------------------|-------------------------:|-----------------:|----------------:|---------------------:|
+    | Matrix     | False consensus                                        | 87.44%                   | 1                | 2,058           | 20.00%               |
+    | Matrix     | Non-experimental heuristics and biases                 | 86.32%                   | 2                | 4,116           | 40.00%               |
+    | Matrix     | Linda -no conjunction                                  | 83.24%                   | 1                | 1,029           | 10.00%               |
+    | Matrix     | Linda-conjunction                                      | 81.57%                   | 1                | 1,029           | 10.00%               |
+    | Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
+    | Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
+    
+
+#### Overall Test-Retest Accuracy Results
+
+| Question Type | Metric | Test-Retest Accuracy  | Number of Rows | Number of Unique Qs
+|------ | ----- | ------ | ----- |----- | 
+|Multiple Choice (MC) - Binary |  Exact Match | **83.27%** | 92,610 | 77
+|Multiple Choice (MC) - Ordinary |  Mean Absolute Deviation | **83.80%** | 16,464 | 98 
+|Matrix | Mean Absolute Deviation | **83.45%** | 10290 | 36
+|Overall | Overall | **83.36%** | 119,364 | 211
+
+I report overall test-retest accuracy number as 83.36% between Wave13 and Wave14 answers.
+
+Note - I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
 
 ###  Dataset Biases
-
-
-
------------------
-
-###### Notes
-
-
-
-Performance gaps between human performance and LBM 0 shot - 
-1. Across categories performance varies - larger gap in pricing,sunk cost fallacy
-
-
-Next steps
-1. Think removing poor questions 
-
-
 
 # Section 2 Modelling Strategy
 
