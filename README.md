@@ -58,12 +58,10 @@ Where DB = Descriptive Bloc, MC = Multiple Choice, TE = Text Entry and Matrix = 
 
 - The dataset is heavily skewed towards Multiple Choice Quesstion and lesser towards the Matrix type question. Keeping the representations of each question type is quite important if we were to sample questions to fit the context size of an LLM model as any question can be asked at test time. 
 
-
-
-
 ### Analysis of Q&A of Wave 4 
 
-For wave 4 Q&A extraction, I used the `wave4_Q_wave4_A` field of the wave_split dataset.
+For wave 4 Q&A extraction, I used the `wave4_Q_wave4_A` field of the wave_split dataset and unroll it to prepare data at Q&A-PID level
+- Total Number of Rows which represent number of Q&A answered in total - 131712
 - Total Uniques Questions Asked - 85. The following table shows a breakdown of Question by different block names - 
 
 | Block Name | Unique Question Count | Question Types |
@@ -119,9 +117,12 @@ I removed 2058 rows from the test-retest accuracy evaluation set. But these bloc
 ### Test-Retest Evaluation of reliability of humans
 
 #### Step 1. Filtering data for evaluation 
-I filtered the wave 4 dataset by
-1. Dropping DB descriptive block question - 129654
-2. Dropping question which has None answer in either of the following - Note - Wrong remove this
+I filtered the wave 4 dataset which contains 131,712 Q&A pairs rows.
+- Filter 1 After Dropping DB descriptive block question's 2058 rows, remaining rows were - 129654
+- Filter 2 I also dropped questions where both Wave 1 to Wave3 and Wave 4 answer are None.
+There were around 10,290 rows found which belonged to the TE (6,174) rows and Slider Question types (4,116) rows
+
+After apply filter 1 and filter 2, we are left with 119,364 Q&A rows answered by 500 participants in Wave 4 for human test-retest evaluation dataset.
 
 The statistics of the dataset by quesion type is as following
 |  Question Type   | Number of Questions 
@@ -130,15 +131,23 @@ The statistics of the dataset by quesion type is as following
 |Matrix | 10,290
 |Total | 119,364
 
-As Evaluation will differ by Question Types because they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical.
+#### Step 2. Evaluation Methodology
 
-For MC Question types, I compute the exact match and then get the % of questions correctly answer by participants.
+As Evaluation will differ by Question Types because they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical. 
 
-For Matrix Question types, which we have 36 unique questions. As each question can have different range, I utilized the question_catalog.json file to get those ranges from the `Columns` column and convert them to likert numerical scales. It is then mapped to the user answer and then I computed metric stated by author as
-
+Author Evaluation Metric Definition 
  ```
- For non-binary measures, we calculate the absolute deviation between the ground truth and predicted answer, divided by the range of possible answers.5 We then compute accuracy as 1 minus this absolute deviation. This measure generalizes accuracy from binary to numerical questions: it ranges between 0 and 1, is equal to 1 when the prediction is equal to the ground truth, and 0 when it is maximally different. When multiple questions are included in the same task, we take the mean accuracy across the questions within each task
+ For non-binary measures, we calculate the absolute deviation between the ground truth and predicted answer, divided by the range of possible answers. We then compute accuracy as 1 minus this absolute deviation. This measure generalizes accuracy from binary to numerical questions: it ranges between 0 and 1, is equal to 1 when the prediction is equal to the ground truth, and 0 when it is maximally different. When multiple questions are included in the same task, we take the mean accuracy across the questions within each task
  ```
+
+As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in following ways
+- MC(Multiple Choice) Question type - It can be binary or range of answers. 
+    - For binary questions, I consider the answer as correct and score of 1 if the Wave4 answer exact match of Wave1-3 Answer else its a score of 0.
+    - For MC Question 
+
+- For Matrix Question types, which we have 36 unique questions. Out of them, 23 questions are likert scale and 13 bipolar.For these questions, I subset their QuestionId from the `question_catalog.json`. I then used their `Columns` column and convert them to likert numerical scales. Then I compute the Absolute deviation between the ground truth's number and predicted answers's and divide by range of possible answer,similar to being reported by authors as mentioned above.
+
+
 
 | Question Type | Metric | Accuracy
 |------ | ----- | ------
