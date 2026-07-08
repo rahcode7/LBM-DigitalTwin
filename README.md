@@ -224,7 +224,7 @@ For these questions, I subset their QuestionId from the `question_catalog.json`.
 |Matrix | Mean Absolute Deviation | **83.45%** | 10290 | 36
 |Overall | Overall | **83.36%** | 119,364 | 211
 
-I report overall test-retest accuracy number as 83.36% between Wave13 and Wave14 answers.
+I calculate  overall test-retest accuracy as the wieghted accuracy by number of rows and report as 83.36% between Wave13 and Wave14 answers.
 
 Note - I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
 
@@ -237,6 +237,13 @@ Note - I also didn't use this the same evaluation dataset to measure against the
 
 
 ###  Dataset Biases
+
+1. **Population Bias**  - Only users from US are the subject of this study, a system trained on this dataset might not be able to generalize and perfom well to users outside the United States as it denotes their preferences and behavior which can vary greatly among geographies.
+2. **Question Category (Block Name) Dataset Imbalance**
+The dataset doesn't contain even number of question per category. Cognitive tests dominate and contains 40 percent of the Wave13 questions asked, whereas the Economic preferences contribute to 20 percent of the questions. Training models require careful balancing of the dataset through sampling or other techniques.
+
+### Limitations
+1. Unavailabilty of Real World Bheavior Dataset - Actual Dataset represent users answers in a survey setting, while their actual behavior like purchases, which can be different is missing. This actual data can be extremely valuable to predict their future behavior.
 
 # Section 2 Modelling Strategy
 
