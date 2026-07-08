@@ -23,7 +23,7 @@ The statistics are as follows  -
 
 - Total Questions Answered :  353929 
 - Unique Number of Persons : 2058
-- Total number of Duplcates Q&A rows Found - 0
+- Total number of Duplicates Q&A rows Found - 0
 - Total Uniques Questions Asked - 171. The following table shows a breakdown of Question by different block names - 
 
 | Block Name                      | Unique Question Counts | Question Types          | 
@@ -229,11 +229,10 @@ I calculate  overall test-retest accuracy as the wieghted accuracy by number of 
 Note - I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
 
 
-
-### Token statistics
+<!-- ### Token statistics
 - To help decide which model to choose in terms of context length.
 - Full Persona - For summary text of a persona profile, maximum of 3,061 words and average of 2,014 words, can be approximated as X tokens based on 1 token = 3/4 word 
-- Wave Dataset - Answer are around similar length for wave1-3 and wave 4 and are around 6320 words.
+- Wave Dataset - Answer are around similar length for wave1-3 and wave 4 and are around 6320 words. -->
 
 
 ###  Dataset Biases
@@ -244,6 +243,7 @@ The dataset doesn't contain even number of question per category. Cognitive test
 
 ### Limitations
 1. Unavailabilty of Real World Bheavior Dataset - Actual Dataset represent users answers in a survey setting, while their actual behavior like purchases, which can be different is missing. This actual data can be extremely valuable to predict their future behavior.
+
 
 # Section 2 Modelling Strategy
 
