@@ -1,22 +1,37 @@
+# Large Behavior Model on Twin-2K-500
+Designing a Large Behavior Model for the following problem statement
 
-# Section 1 Dataset Analysis
 
-### Dataset Statistics
+**Given a person's answers from waves 1–3 (their "persona"), predict how that same person answers the held-out wave-4 questions — and evaluate against both the real wave-4 answers and the human test–retest ceiling**
+
+
+# Section 1 Data Exploration 
+
+Dataset Link - https://huggingface.co/datasets/LLM-Digital-Twin/Twin-2K-500
+
+#### Dataset Usage
+1. Full Persona Dataset - This dataset contains all waves data reported together. It can be skipped as the persona information columns contains wave 4 responses for common set of questions of wave 1-3 and wave 4. This would lead to target leakage if used for training.
+2. **Wave Split Dataset** - After analyzing the dataset and also as reported by the authors, this is the dataset I used for building and evaluating models.
+3. Question Catalog (question_catalog.json) - This datasets contains all the Question asked in either wave 1-3 or wave 4 to the participant. I used this dataset for evaluation metrics purposes to create answer ranges from the answer options for each question based on their `QuestionID` field. Specifically for Matrix and MC Type Questions available via `QuestionType` field, I used `Col` and `Options` fields respectively to get the available set of answers for each question.
+  
+### Dataset Statistics - Wave Split Dataset
 
 ###### Token statistics
 - Why ? To help decide which model to choose in terms of context length.
 - Full Persona - For summary text of a persona profile, maximum of 3,061 words and average of 2,014 words, can be approximated as X tokens based on 1 token = 3/4 word 
 - Wave Dataset - Answer are around similar length for wave1-3 and wave 4 and are around 6320 words.
 
-##### Dataset Analysis
-- Full Persona - The column -> persona_text seems not usable for training. In dataset definition, the authors has mentioned for group of questions that appear in both waves 1-3 and wave 4, the wave 4 responses are used. This would lead to data leakage of these group of questions if we use this for training.
 
-##### Question Analysis 
 
- 
+### Analysis of Q&A of Wave 1 to Wave 3
+
+I analayzed the Wave 1 to Wave 3 Q&A from the `wave1_3_persona_json` by expanding the json format column from the `wave_splits `dataset which is at persona or user level to each Q&A answer by each user. 
+The statistics are as follows  - 
+
 - Total Questions Answered :  353929 
-
-- Wave 1 to Wave 3 Question Types
+- Unique Number of Persons : 2058
+- Total number of Duplcates Q&A rows Found - 0
+- Total Uniques Questions Asked - 171. The following table shows a breakdown of Question by different block names - 
 
 | Block Name                      | Unique Question Counts | Question Types          | 
 |---------------------------------|-----------------------:|-------------------------|
@@ -26,47 +41,101 @@
 | Demographics                    | 14                     | MC                      |
 | Economic preferences - intro    | 2                      | DB                      |
 | Forward Flow                    | 1                      | TE                      |
+| Total | 171 | | 
 
-- Add number of times this block was answered across its Q types
-- Add sample question per block per question type
-
-- Add  percentage contribution column 
 Where DB = Descriptive Bloc, MC = Multiple Choice, TE = Text Entry and Matrix = Likert scale
 
-- Wave 4  
-- Add table 
+- The dataset is heavily skewed towards cognitive test and lesser towards the economic preferences. Keeping the representations of each question is quite important if we were to sample questions to fit the context size of an LLM model as any question can be asked at test time. 
+
+- The following table shows the dataset contribution by different Question Types 
+
+| Question Type | Number of Rows | Percentage (%) |
+|---------------|---------------:|---------------:|
+| MC | 220,199 | 62.22 |
+| Matrix | 59,682 | 16.86 |
+| TE | 45,236 | 12.78 |
+| DB | 28,812 | 8.14 |
+
+- The dataset is heavily skewed towards Multiple Choice Quesstion and lesser towards the Matrix type question. Keeping the representations of each question type is quite important if we were to sample questions to fit the context size of an LLM model as any question can be asked at test time. 
 
 
 
-- Example Question Types
-DB,MC,TE, Matrix
+
+### Analysis of Q&A of Wave 4 
+
+For wave 4 Q&A extraction, I used the `wave4_Q_wave4_A` field of the wave_split dataset.
+- Total Uniques Questions Asked - 85. The following table shows a breakdown of Question by different block names - 
+
+| Block Name | Unique Question Count | Question Types |
+|------------|----------------------:|----------------|
+| Product Preferences - Pricing | 41 | DB, MC |
+| Non-experimental heuristics and biases | 5 | MC, Matrix, Slider |
+| Anchoring - African countries high | 2 | MC, TE |
+| Anchoring - African countries low | 2 | MC, TE |
+| Anchoring - redwood high | 2 | MC, TE |
+| Anchoring - redwood low | 2 | MC, TE |
+| Proportion dominance 1C | 1 | MC |
+| Outcome bias - success | 1 | MC |
+| Probability matching vs. maximizing - Problem 1 | 1 | Matrix |
+| Probability matching vs. maximizing - Problem 2 | 1 | Matrix |
+| Proportion dominance 1A | 1 | MC |
+| Proportion dominance 1B | 1 | MC |
+| Absolute vs. relative - calculator | 1 | MC |
+| Proportion dominance 2A | 1 | MC |
+| Proportion dominance 2B | 1 | MC |
+| Outcome bias - failure | 1 | MC |
+| Sunk cost - no | 1 | TE |
+| Sunk cost - yes | 1 | TE |
+| WTA/WTP Thaler - WTP noncertainty | 1 | MC |
+| WTA/WTP Thaler problem - WTA certainty | 1 | MC |
+| Proportion dominance 2C | 1 | MC |
+| Myside Ford | 1 | MC |
+| Myside German | 1 | MC |
+| Absolute vs. relative - jacket | 1 | MC |
+| Linda-conjunction | 1 | Matrix |
+| Linda - no conjunction | 1 | Matrix |
+| Less is More Gamble C | 1 | MC |
+| Less is More Gamble B | 1 | MC |
+| Less is More Gamble A | 1 | MC |
+| False consensus | 1 | Matrix |
+| Disease-loss | 1 | MC |
+| Disease - gain | 1 | MC |
+| Base-rate 70 engineers | 1 | Slider |
+| Base-rate 30 engineers | 1 | Slider |
+| Allais Form 2 | 1 | MC |
+| Allais Form 1 | 1 | MC |
+| WTA/WTP Thaler problem - WTP certainty | 1 | MC |
+
 
 
 #### Other Findings
-- DB questions are descriptive blocks and should not be considered for evaluation.
-I removed 2058 rows from the evaluation set . But these block could be useful for training data as they provide LLMs with the context.
-- Can users skip the questions ? 
-    - To analyze user Settings -> ForceResponse
+- DB questions are descriptive blocks for the next question and should not be considered for evaluation.
+I removed 2058 rows from the test-retest accuracy evaluation set. But these block could be useful for training data as they provide LLMs with the context for a question
+- Users can also skip the question 
+    - We can anayze user Settings -> ForceResponse 
+    - And remove the skipped question (Didn't completed)
 
-##### Answer Analysis
 
+### Test-Retest Evaluation of reliability of humans
 
-### Test-Retest Reliability
+#### Step 1. Filtering data for evaluation 
+I filtered the wave 4 dataset by
+1. Dropping DB descriptive block question - 129654
+2. Dropping question which has None answer in either of the following - Note - Wrong remove this
 
-Total Question To Evaluate after dropping DB : 129654
-
-Total Question To evaluate after dropping empty in either wave : 119364
-
+The statistics of the dataset by quesion type is as following
 |  Question Type   | Number of Questions 
 |-----|-----| 
 |Multiple Choice (MC) | 109,074 | 
 |Matrix | 10,290
 |Total | 119,364
-As Evaluation will differ by Question Types as they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical.
+
+As Evaluation will differ by Question Types because they have different answer ranges, we must compute metrics for them individually. As reported in the paper the answer are of 2 types binary or numerical.
 
 For MC Question types, I compute the exact match and then get the % of questions correctly answer by participants.
 
 For Matrix Question types, which we have 36 unique questions. As each question can have different range, I utilized the question_catalog.json file to get those ranges from the `Columns` column and convert them to likert numerical scales. It is then mapped to the user answer and then I computed metric stated by author as
+
  ```
  For non-binary measures, we calculate the absolute deviation between the ground truth and predicted answer, divided by the range of possible answers.5 We then compute accuracy as 1 minus this absolute deviation. This measure generalizes accuracy from binary to numerical questions: it ranges between 0 and 1, is equal to 1 when the prediction is equal to the ground truth, and 0 when it is maximally different. When multiple questions are included in the same task, we take the mean accuracy across the questions within each task
  ```
@@ -88,11 +157,7 @@ Blockwise Matrix Evaluation Metrics
 | Matrix     | Probability matching vs. maximizing - Problem 2        | 76.17%                   | 1                | 1,026           | 9.97%                |
 | Matrix     | Probability matching vs. maximizing - Problem 1        | 73.36%                   | 1                | 1,032           | 10.03%               |
 
-
-
-
-
-These human numbers of test-retest accuracy can be used to compare with the LLM performance.
+I also didn't use this the same evaluation dataset to measure against the LLM as the model requires training test splits and it won't be correct to split by rows or by question types directly. I discuss in the next section the strategy use to create the train and test/evaluation dataset.
 
 ###  Dataset Biases
 
