@@ -544,10 +544,15 @@ Condition 2 Model degrades in performance in terms of the overall accuracy
 Next Add graphs , report, results etc for random baseline etc
 
 #### Todos/ Next Steps
+
+**1. LLM Model Improvement Techniques**
+
 - Better Context Handling - Try summary generation and other techniques for compressing the input prompt
 -  SFT Loss function - Explore ranking based loss functions
 -  RLVR - Discussed above that can be built on top of SFT trained models
 -  Dataset - Explore Question Catalog Json more and collect more signals for input prompt
+
+**2. Drift Detection in such behavior models**
 
 
 ###### References
