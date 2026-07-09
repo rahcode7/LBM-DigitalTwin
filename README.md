@@ -323,10 +323,10 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Warmup Ratio** | 0.10 | Warmup for the first 10% of training steps. |
 | **Optimizer** | AdamW | Optimizer with decoupled weight decay. |
 | **Weight Decay** | 0.01 | Regularization to reduce overfitting. |
-| **Number of Epochs** |3 | Train until validation loss converges. |
-| **Per-Device Batch Size** | 2–8 | Depends on GPU memory and context length. |
-| **Gradient Accumulation Steps** | 8–32 | Increases the effective batch size without additional GPU memory. |
-| **Effective Batch Size** | 64–256 | Product of per-device batch size × gradient accumulation × number of GPUs. |
+| **Number of Epochs** | 3 | Train until validation loss converges. |
+| **Per-Device Batch Size** | 1 | Depends on GPU memory and context length. |
+| **Gradient Accumulation Steps** | 4 | Increases the effective batch size without additional GPU memory. |
+| **Effective Batch Size** | 4 | Product of per-device batch size × gradient accumulation × number of GPUs. |
 | **Maximum Sequence Length** | 4,096 tokens | Depends on available GPU memory and average participant history length. |
 | **Loss Function** | Cross-Entropy Loss | Predict the target answer tokens. |
 | **Mixed Precision** | BF16 (preferred) / FP16 | Reduces GPU memory usage and speeds up training. |
