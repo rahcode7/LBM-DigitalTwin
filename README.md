@@ -479,8 +479,15 @@ Following artifacts should be maintained for a model for comparing model perform
 - Model Metrics Reports - Measuring model performance on accuracy and reliability for all the model versions till date
 
 ### Measuring model drifts
+TODO
 
-### Governance of the model 
+Concept Drift
+
+### Governance and Ethics
+As the LBM can be susceptible to stereotying, ethically, it should not be used for user profiling ike Credit/Loan applications, Resume Screening.
+
+Privacy Prevention - We must make sure the original participants names and their sensitive metada of the survey is never exposed to the model training, as it risks the model learning that and leaking those information.
+
 
 ### Model Retraining 
 We should retrain the model if either of the condition happend 
