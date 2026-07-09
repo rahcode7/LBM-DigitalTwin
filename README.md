@@ -251,10 +251,11 @@ of the actual population which can be millions of people. (For Example, extrapol
 
 ### 2.1 Problem Formulation
 
-To build a LLM based behavior model that predicts how a participant answer questions
-in current setting, given their historical survey Q&A dataset.
+Objective - ***To build an LLM based behavior model that predicts how a participant answer questions
+in current setting, given their historical survey Q&A dataset.***
 
-Formally, given a set of historical Q&A set of Users as user persona P,the LLM Model has to compute the conditional probability `P(A|P,Q)` and generate A, the Answer A for current Question Q.
+Formally, given a set of historical Q&A set of Users as user persona P, the model has to compute the conditional probability `P(A|P,Q)` and generate A, the Answer 
+for current Question Q.
 
 
 ### 2.2 Train Test Splits
