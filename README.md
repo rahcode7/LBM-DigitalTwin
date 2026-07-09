@@ -262,14 +262,24 @@ for current Question Q.
 - To measure true generatization, we should split at the `participant_id` level to prevent target leakage. In it, we should keep the training dataset with seen person and their Q&A and in the test set, we only measure the participants which were not seen in training. 
 - We can make 3 splits as 80/10/10 for train,validation and test set respectively.
 
+
+### 2.3 LLM Models
+We choose Qwen3 0.6b, which is a 600 million parameter model having a context size of 32,768 tokens.
+
 ### 2.3 Context Handling
 
-- Large context size - Summaries or how to handle full text
-- Prompt based compression techniques 
-    - LLMLingua
-- Base model -base, instruction tuned model ?
+Problem - We use the text field `wave1_3_persona_json` as the main field to create the user persona as it contains Wave1 to Wave3 Questions. By passing each user through the Qwen tokenizer we find the Average token length of 35077 and Maximum length of 36340 tokens which is higher than the supported context size.
+Utilizing the full context length will also lead to degraded model performance.
 
-Larger model can compress input prompt and provide the input to the smalle
+Proposed approaches to handle large context length
+- **Sampling Question & Answers** - As there are different question type and block names,we can sample Q&A for each question type or block names, instead of utilizing all the questions. Given a chosen context length, like 4096, we can sample a certain number of questions from each question category and then pass to the model.This is the approach currently implemented
+- **Summarize Demographics Q&A using LLMs** - The demographics Q&A can be shortened by creating an abstract summary representation by using another LLM model.
+- **Prompt Based Compression using LLMs** 
+    - We can utilize libraries like LLMLingua
+
+Context Length Trade Offs
+
+
 
 ### 2.4 Modelling Techniques
 
@@ -292,6 +302,9 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     - **Target Variable** - `wave4_Q_wave4_A`'s `selected_answer` column from `Wave Split` folder
     - **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these tokens as -100.
 - Key Hyperparameters
+
+  Thinking Mode - disabled
+
     Copy hyperparameters
 - Advantages - Higher Model performance than prompting as the model weights will be altered and will learn the user's behavior representations from the dataset, Model retraining capabilities which is not available in just the baseline prompting model.
 - Disadavantages 
@@ -533,8 +546,6 @@ Condition 2 Model degrades in performance in terms of the overall accuracy
 
 ###### References
 https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them
-
-https://numiqo.com/tutorial/cohens-kappa
 
 https://arxiv.org/pdf/2606.05336
 
