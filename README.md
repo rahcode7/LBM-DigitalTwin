@@ -545,6 +545,8 @@ Next Add graphs , report, results etc for random baseline etc
 
 #### Todos/ Next Steps
 
+1. Context Handling - Try summary generation and other techniques for compressing the input prompt
+2. RLVR - Discussed above that can be built on top of SFT trained models
 
 
 ###### References
