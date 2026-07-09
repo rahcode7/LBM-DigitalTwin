@@ -468,23 +468,27 @@ by allocating more staff, adding self checkout.
 
 # Section 5 Long run maintenance 
 
-###### Model Artifacts 
-Following artifacts should be maintained for measuring model performance,debugging purposes.
+### Model Artifacts 
+Following artifacts should be maintained for a model for comparing model performance in different time frames like pre-post event settings (for example pre and post covid user behavior),
+
+**Artifacts List**
+- LBM Model Checkpoints 
+- Persona Model Checkpoints or API Versions - If separate models are used to synthesize persona information
 - Prompt Registry
-- Prediction Tags - Tag every predictin of the model with prompt version,model version ID (multiple model IDs in case of cascaded models like summarizer model id + SFT/RL model id)
+- Prediction Tags - Tag every prediction of the model with prompt version,model version ID of LBM Model, Persona Model IDs
+- Model Metrics Reports - Measuring model performance on accuracy and reliability for all the model versions till date
 
-###### Measuring model drifts
+### Measuring model drifts
 
+### Governance of the model 
 
-###### Governance of the model 
+### Model Retraining 
+We should retrain the model if either of the condition happend 
+Condition 1 Cohen's Kappa scores drops below a certain threshold
+   OR
+Condition 2 Model degrades in performance in terms of the overall accuracy
 
-###### Model Retrainign Trigger Requirements
-
-Adding a new versioned model can depend upon
-- If the psycology metrics of a testing version improves compared to the current production model
-- Or
-- Current model degrades in performance accuracy
-
+- Also, If new survey data is available, we should discard the oldest waves data, and weight more importance to the recent survey results.
 
 
 # Section 6 Modelling Codes
