@@ -477,7 +477,7 @@ A good baseline could be randomly guessing the answers as the base model should 
 
 # Section 4 Business Applications 
 
-### Retail and E Commerce
+### E Commerce
 
 ##### 1. Personalized Recommendation in Ecommerce
 It can be used to deliver better personalized and psycological recommendations of items to the user based on an ecommerce website compared to the traditional recommendation systems.
@@ -490,10 +490,11 @@ The digital twin models can update the consumer behavior representations on cont
 ##### 3. New Product Launch
 Digital Twins can help simulate how certain demographics or segments will react to a new product. This can help save both money and time in conducting market research studies before a new product launch.
 
-### Clinical Research
+### Retail (Offline)
 
-
-
+###### 1. Staff Planning and Optimizing Checkouts
+Companies can create digital twins of a store and can predict user's purchase behaviour and estimate time in checkout queue and plan for checkout management at peak hours or peak seasons
+by allocating more staff, adding self checkout.
 
 
 # Section 5 Long run maintenance 
