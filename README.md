@@ -267,8 +267,6 @@ of the actual population which can be millions of people. (For Example, extrapol
 Larger model can compress input prompt and provide the input to the smalle
 
 
-
-
 ### Model Techniques
 
 
@@ -409,17 +407,22 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
 # Section 3 Evaluation
 #### Evaluation Metrics 
 
-In addition to accuracy based evaluation metrics mentioned for Matrix and Multiple Choice Question, we can also measure the agreement amonng Human test-restests (Wave1-3 vs Wave4 answer)(Set 1) and LLM Model vs Human Responses in Wave 4 (Set 2)
+In addition to accuracy based evaluation metrics mentioned for Matrix and Multiple Choice Question, we should also measure the agreement to test reliability of Human test-restest (Wave1-3 vs Wave4 answer)(Set 1) and LLM Model vs Human Responses in Wave 4 (Set 2)
 
-1. **Cohen's Weighted Kappa** - As both Matrix and MC Question have likert scales questions, 
-we can measure the Cohen's Weighted Kappa.
-
-2. **Cohen's Kappa**
-   - For Binary Multiple Choice (MC) , where we have yes or no type of answer, we can utilize Cohens' Kappa to measure agreement among 2 set of responses of the same human. Its range is in -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
+1. **Cohen's Kappa**
+   - For Binary Multiple Choice (MC) , where we have yes or no type of answer, we can utilize Cohens' Kappa to measure agreement among 2 set of responses of the same human. Generally, Cohen's Kappa is a statistical measure to quantify level of agreement between 2 raters which we can apply in our settings. Its range is in -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
     
-   - The Metric can be defined as : k = Observed Agreement - Expected Agreement
+   - The Metric can be defined as : 
+   
+        ```    k = (Observed Agreement Probability - Expected Agreement Probability)  / (1 - Expected Agreement Probability)```
+    where Expected Agreement Probability (Pe) is the probability of chance agreement. 
+    Observed Agreement Probability is the sum of cases where the user gave same answer for a given question in both Wave1-3 and Wave4 divided by the total number of questions.
 
-`
+2. **Cohen's Weighted Kappa** - As both Matrix and MC Question have likert scales questions, 
+we can measure the Cohen's Weighted Kappa to measure agreement a rater's previous and current responses.
+
+
+
 #### Performance Ceiling  
 The test-retest reliability metrics can serve as the ceiling criteria for benchmarking the models. For the 2 question types Multiple Choice and Matrix type question, we can ......
 
@@ -496,6 +499,10 @@ https://numiqo.com/tutorial/cohens-kappa
 https://arxiv.org/pdf/2606.05336
 
 https://github.com/microsoft/LLMLingua
+
+https://numiqo.com/tutorial/cohens-kappa
+
+https://numiqo.com/tutorial/weighted-cohens-kappa
 
 
 
