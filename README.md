@@ -249,9 +249,19 @@ of the actual population which can be millions of people. (For Example, extrapol
 
 # Section 2 Modelling Strategy
 
+### 2.1 Problem Formulation
 
-### 2.1 Context Handling
+To build a LLM based behavior model that predicts how a participant answer questions
+in current setting, given their historical survey Q&A dataset.
 
+Formally, given a set of historical Q&A set of Users as user persona P,the LLM Model has to compute the conditional probability `P(A|P,Q)` and generate A, the Answer A for current Question Q.
+
+
+### 2.2 Train Test Splits
+- To measure true generatization, we should split at the `participant_id` level to prevent target leakage. In it, we should keep the training dataset with seen person and their Q&A and in the test set, we only measure the participants which were not seen in training. 
+- We can make 3 splits as 80/10/10 for train,validation and test set respectively.
+
+### 2.3 Context Handling
 
 - Large context size - Summaries or how to handle full text
 - Prompt based compression techniques 
@@ -260,11 +270,7 @@ of the actual population which can be millions of people. (For Example, extrapol
 
 Larger model can compress input prompt and provide the input to the smalle
 
-
-### 2.2 Dataset Splits
-
-
-### 2.3 Modelling Techniques
+### 2.4 Modelling Techniques
 
 ### LLM for Answer prediction
 #### 1. Baseline Model
@@ -306,7 +312,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     - Reinforcement learning models required additional training of models which requires even higher training times compared to SFT
 
 
-### 2.4 Risk and Mitigations
+### 2.5 Risk and Mitigations
 
 | Risk | Description | Mitigation |
 |------|-------------|------------|
@@ -464,9 +470,6 @@ Random Guessing - A good baseline could be randomly guessing the answers by a mo
 
 - **Target Leakage (Wave Splits Dataset)** - If we split the dataset by rows, we will have situation where for a given person and a question, the training dataset has seen their wave 1-3 answer and will memorize and predict the same answer in wave4 which is from future time frame.
 
-#### Train Test Splits
-- To measure true generatization, we should split at the `participant_id` level to prevent target leakage. In it, we should keep the training dataset with seen person and their Q&A and in the test set, we only measure the participants which were not seen in training. 
-- We can make 3 splits as 80/10/10 for train,validation and test set respectively.
 
 
 # Section 4 Business Applications 
