@@ -275,6 +275,7 @@ We use the text field `wave1_3_persona_json` as the main field to create the use
 - Larger Training Times - As self-attention mechanism scales quadratically with sequence length, 
 - KV Cache - This reuires storing large volume of data in the KV cache, leading to slower computation and traiing.
 
+
 #### Proposed approaches to handle large context length
 - **Sampling Question & Answers** - As there are different question type and block names,we can sample Q&A for each question type or block names, instead of utilizing all the questions. Given a chosen context length, like 4096, we can sample a certain number of questions from each question category and then pass to the model.This is the approach currently implemented
 - **Summarize Demographics Q&A using LLMs** - The demographics Q&A can be shortened by creating an abstract summary representation by using another LLM model.
@@ -282,8 +283,9 @@ We use the text field `wave1_3_persona_json` as the main field to create the use
     - We can utilize libraries like LLMLingua, which can compress a prompt upto 20X lesser tokens by removing the non-essential tokens. Although it needs to be explored how it will perform for Q&A set up like ours.
 
 
-
-
+#### Chosen Context Length
+I choose 4096 context length that can have lower training times and can fit a GPU well.
+Also, if we have summaries available, it should be able to easily fit in these context windows.
 
 ### 2.4 Modelling Techniques
 
@@ -348,23 +350,17 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Domain Generalization** | The model may learn survey-specific patterns that do not generalize to other behavioral tasks or domains. | Evaluate across different behavioral categories (pricing, cognitive biases, preferences, etc.) and report per-domain performance to identify weaknesses. |
 
 
-### Run Models
+### Running LLM Training & Inference Jobs
+Machine Used - `Linux T4 16GB`
 
-#### Prerequisites
-
+#### 1. Install Packages
 ```
 # Get Pip
 sudo apt update && sudo apt install python3-pip -y
 
 # Install Torch
+# Check CUDA version
 nvidia-smi
-
-# Cuda CPU
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-
-# Cuda 12.6
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
-
 # Cuda 13
 pip3 install torch torchvision
 
@@ -375,27 +371,24 @@ pip install transformers
 pip install accelerate wandb peft trl==0.9.6
 
 # Wandb Set up 
-wandb login 
-API Key ce18e8ae96d72cd78a7a54de441e9657bc0a913d
-
+wandb login  # Add your API Key
 ```
 
 
-##### Current Sampled dataset statstics
-- Train 80 personas * 50 Questions = 4000 training rows
-- Val 10 personas * 50 Questions = 500 validation rows
-- Test 10 personas * All Questions from wave 4 
+#### 2. Datasets Splits
 
-#### Step 1 Prepare
-```
-python src/models/data-prep.py
-```
+We randomly split the dataset by persons with 80% of the person in training set, 10% of the person in test set and 10% in validation set.
 
-#### Step 2 Train Model
+For prototyping, the dataset is as following
+- Training Data =  8 person * 20 Questions from Wave 1-Wave3 = 160 training rows
+- Validation Data = 1 person * 20 Questions from Wave 1-Wave3 = 20 validation rows
+- Test  = 1 person * 84  Questions from Wave 4 = 84  Test rows
+- Both the training dataset and validation test set strictly contains Q&A from Wave1 to Wave 3. We strictly keep the Wave4 dataset only for test set and that too for unseen users which are not seen during training.
+- Prepare this data as   
+        ``` python src/models/data-prep.py ```
 
+#### 3. LLM SFT Model Training 
 
-##### SFT Fine Tuned Script to run
-Train on Wave 1-3 dataset 
 ```
 cd lbm
 
@@ -424,7 +417,7 @@ accelerate launch --num_processes 1 src/models/train.py \
 
 ```
 
-##### Step 3 Inference
+##### 4 Run Inference
 Inference on Wave 4 dataset of unseen persona
 
 ```
@@ -440,7 +433,7 @@ python src/models/inference.py \
     --batch_size 1
 ```
 
-#### Step 4 Evaluate Metrics
+#### 5 Run Evaluation
 
 ```
 cd lbm
@@ -448,9 +441,11 @@ export MODEL_DIR='qwen3-0.6b-sft'
 python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predictions.jsonl" --metrics_path datasets/results/$MODEL_DIR/metrics.json
 ```
 
-**Final Metrics Report**
-- File Path - datasets/results/$MODEL_DIR
-- File Name - metrics.json
+#### 5 Collect Results
+
+Final Metrics Report
+- File Path - `datasets/results/$MODEL_DIR`
+- File Name - `metrics.json`
 
 
 # Section 3 Evaluation
