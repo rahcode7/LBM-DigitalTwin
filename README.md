@@ -469,7 +469,7 @@ by allocating more staff, adding self checkout.
 # Section 5 Long run maintenance 
 
 ### Model Artifacts 
-Following artifacts should be maintained for a model for comparing model performance in different time frames like pre-post event settings (for example pre and post covid user behavior),
+Following artifacts should be maintained for a model for comparing model performance in different time frames like pre-post event settings (for example pre and post covid user behavior) and model debugging purposes
 
 **Artifacts List**
 - LBM Model Checkpoints 
