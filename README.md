@@ -409,8 +409,8 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
 # Section 3 Evaluation
 #### Evaluation Metrics 
 
-1. **Accuracy** As we have 2 Question types of Multiple choice (MC) and Matrix questions, 
-    we can compute Exact Match Rate and Mean Absolute Deviation accuracy metrics of the digital twin model vs Wave 4 ground truth answers. 
+In addition to accuracy based evaluation metrics mentioned for Matrix and Multiple Choice Question, we can also measure the correlation amonng Human test-restests and LLM Model vs Human Responses. 
+
 2. **Correlation (For Matrix Type Questions)**
     - For Matrix type questions having likert scales, we can measure pearson correlation.
     - It should be measure for the following sets - 
@@ -421,26 +421,9 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
     We should also measure the agreement between the following sets  
     - Set 1. The correlation between human's answers in Wave1-3 vs Wave4 answer to check their agreement with themselves.
     - Set 2 . The correlation between human's answers in Wave 4 vs Digital Twin model.
-    - Multiple choice questions have 2 types of answers, ordered or unordered.
-        - Type 1 : Ordinal Answers - In the example Question we have order in the range from I am so sad or unhappy that I can't stand it -> I don't feel sad. 
-           
-           Metric :  Cohen's Weighted Kappa
-           
-
-         ```
-        "QuestionID": "QID126",
-        "QuestionText": "",
-        "QuestionType": "MC",
-        "Options": [
-        "I don't feel sad",
-        "I feel sad",
-        "I am sad all the time and I can't snap out of it",
-        "I am so sad or unhappy that I can't stand it"
-        ]
-        ```
-            
-        - Type 2 : Unordered Answers
-        In the example question, its a yes or no type of question.
+    - Multiple choice questions have 2 types of answers, binary or ordered.
+        - **Type 1 : Binary Answers**
+        In the example question, if it a binary yes or no type of question.
 
           Metric :  Cohen's Kappa
          Range  : -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
@@ -455,11 +438,30 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
         ]
         ```
 
+        - **Type 2 : Ordinal Answers** - In the example Question we have order in the range from I am so sad or unhappy that I can't stand it -> I don't feel sad. 
+           
+           Metric :  Cohen's Weighted Kappa
+
+         ```
+        "QuestionID": "QID126",
+        "QuestionText": "",
+        "QuestionType": "MC",
+        "Options": [
+        "I don't feel sad",
+        "I feel sad",
+        "I am sad all the time and I can't snap out of it",
+        "I am so sad or unhappy that I can't stand it"
+        ]
+        ```
+            
+       
+        ```
+
 #### Performance Ceiling  
 The test-retest reliability metrics can serve as the ceiling criteria for benchmarking the models. For the 2 question types Multiple Choice and Matrix type question, we can ......
 
-#### Baseline to beat 
-A good baseline could be randomly guessing the answers as the base model should be able to beat if it does truly learn something from the dataset.
+#### Trivial Baseline
+Random Guessing - A good baseline could be randomly guessing the answers by a models as the base model should be able to beat if it does truly learn something from the dataset.
 
 #### Data Leakage
 - **Persona summaries and usage of `Full personal` folder** - 
@@ -469,10 +471,11 @@ A good baseline could be randomly guessing the answers as the base model should 
     The corresponding `persona_summary` seems to be generated from the full dataset of all 4 waves combined. If we plan to use the summary of wave 1-3, this field doesn't seem to be reliable.
     We need to generate our own summaries if needed for training from the Wave Split folder's `wave1_3_persona_text` or `wave1_3_persona_json`
 
-- **Target Leakage** - If we split the dataset by rows, we will have situation where for a given person and a question, the training dataset has seen their wave 1-3 answer and will memorize and predict the same answer in wave4 which is from future time frame.
+- **Target Leakage (Wave Splits Dataset)** - If we split the dataset by rows, we will have situation where for a given person and a question, the training dataset has seen their wave 1-3 answer and will memorize and predict the same answer in wave4 which is from future time frame.
 
 #### Train Test Splits
-- To measure generatization, we should split at the `participant_id` level to prevent target leakage. The splits I am going with is splits at 70/10/20 for train,validation and test set respectively.
+- To measure true generatization, we should split at the `participant_id` level to prevent target leakage. In it, we should keep the training dataset with seen person and their Q&A and in the test set, we only measure the participants which were not seen in training. 
+- We can make 3 splits as 80/10/10 for train,validation and test set respectively.
 
 
 # Section 4 Business Applications 
@@ -488,11 +491,11 @@ It also solves the problem of cold start in ecommerce web, where we can generate
 The digital twin models can update the consumer behavior representations on continous basis and then can be used to forecast their future purchasing intent. This helps in anticipating and optimizing the supply chain and efficient inventory management.
 
 ##### 3. New Product Launch
-Digital Twins can help simulate how certain demographics or segments will react to a new product. This can help save both money and time in conducting market research studies before a new product launch.
+Digital Twins can help simulate how certain demographics or segments will react to a new product. This can help save both money and time by reducing the need for conducting market research studies before a new product launch.
 
 ### Retail (Offline)
 
-###### 1. Staff Planning and Optimizing Checkouts
+###### 1. Staff Planning and Optimizing Checkout Times
 Companies can create digital twins of a store and can predict user's purchase behaviour and estimate time in checkout queue and plan for checkout management at peak hours or peak seasons
 by allocating more staff, adding self checkout.
 
