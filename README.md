@@ -268,16 +268,20 @@ We choose Qwen3 0.6b, which is a 600 million parameter model having a context si
 
 ### 2.3 Context Handling
 
-Problem - We use the text field `wave1_3_persona_json` as the main field to create the user persona as it contains Wave1 to Wave3 Questions. By passing each user through the Qwen tokenizer we find the Average token length of 35077 and Maximum length of 36340 tokens which is higher than the supported context size.
-Utilizing the full context length will also lead to degraded model performance.
+#### Problem 
+We use the text field `wave1_3_persona_json` as the main field to create the user persona as it contains Wave1 to Wave3 Questions. By passing each user through the Qwen tokenizer we find the Average token length of 35077 and Maximum length of 36340 tokens which is higher than the supported context size. Utilizing the full context length will also lead to degraded model performance.
 
-Proposed approaches to handle large context length
+#### Large Context Length Problems for LLMs
+- Larger Training Times - As self-attention mechanism scales quadratically with sequence length, 
+- KV Cache - This reuires storing large volume of data in the KV cache, leading to slower computation and traiing.
+
+#### Proposed approaches to handle large context length
 - **Sampling Question & Answers** - As there are different question type and block names,we can sample Q&A for each question type or block names, instead of utilizing all the questions. Given a chosen context length, like 4096, we can sample a certain number of questions from each question category and then pass to the model.This is the approach currently implemented
 - **Summarize Demographics Q&A using LLMs** - The demographics Q&A can be shortened by creating an abstract summary representation by using another LLM model.
 - **Prompt Based Compression using LLMs** 
-    - We can utilize libraries like LLMLingua
+    - We can utilize libraries like LLMLingua, which can compress a prompt upto 20X lesser tokens by removing the non-essential tokens. Although it needs to be explored how it will perform for Q&A set up like ours.
 
-Context Length Trade Offs
+
 
 
 
