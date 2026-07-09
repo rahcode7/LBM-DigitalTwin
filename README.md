@@ -267,40 +267,71 @@ of the actual population which can be millions of people. (For Example, extrapol
 Larger model can compress input prompt and provide the input to the smalle
 
 
-### Model Techniques
+### 2.3 Modelling Techniques
+
+### LLM for target prediction
+#### 1. Baseline Model
+Baseline model will be a 0 shot version of the LLM model we choose. 
+
+- Input Context to LLM - User Persona + History + Current Wave Question 
+- Target - Answer for the current Question
+- Advantages - 
+    - Ease of set up - Requires just setting up the prompts for the model, can use Open Source/Closed Source model without setting up the infrastructure of hosting the model
+- Disadvantages 
+    - Lower model performance 
+    - Less behavioral personalization -  model relies on internal representation which doesn't represent the learned user behavior of our dataset.
+
+#### 2. Supervised Fine Tuning (SFT)
+- Here we fine tune an LLM model on a past survey dataset 
+- Objective Function
+    - **Loss Function** - Cross Entropy Loss Function
+    - **Target Variable** - `wave4_Q_wave4_A`'s `selected_answer` column from `Wave Split` folder
+    - **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these tokens as -100.
+- Key Hyperparameters
+    Copy hyperparameters
+- Advantages - Higher Model performance than prompting as the model weights will be altered and will learn the user's behavior representations from the dataset, Model retraining capabilities which is not available in just the baseline prompting model.
+- Disadavantages 
+    - Higher Set up cost : Requires higher investment compared to prompting in terms of expertise in LLM SFT Fine tuning, GPU and Infrastructure requirements for hosting the model
+    - SFT Model Set up needs : Requires proper training dataset preparation, balanced datasets,
+    loss functions and monitoring of trained models.
+    - Model Overfitting : The model starts to memorize the training dataset more, instead of learning
+
+#### 3. Reinforcement Learning With Human Feedback
+- As the answers have a fixed deterministic range, we can reward the model by
+    - Higher Rewards - If predicted answers are more closer to actual values 
+    - Lower Rewards - If the model outputs are far from the actual answer
+
+- Advantages 
+    - SFT has limitation that CE Loss function learns to classify the answer, but doesn't know if an answer of 1 is how much bettern than an answer of 7 for a 1 to 10 range answer, which RLVR can help mitigate
+    - It also align the base model by changing its weight distribution in order to answer more like human would
+    - These leads to higher model performance over SFT 
+
+- Disadvantages
+    - Reinforcement learning models required additional training of models which requires even higher training times compared to SFT
 
 
-#### Baseline Model
-Baseline model will be a 0 shot version of the model we choose.
+### 2.4 Risk and Mitigations
 
-#### Supervised Fine Tuning (SFT)
-Why ? 
-
-
-#### Base model vs instruction tuned 
-
-
-#### Objective Function
-- **Loss Function** - Cross Entropy Loss 
-- **Target Variable** - `wave4_Q_wave4_A` column from `Wave Split` folder
-- **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these token as -100.
-
-#### Key Hyperparameters
-
-
-
-###### Improving SFT Models with RLVR
-As the answers have a fixed deterministic range, we can reward the model whose outputs are more closer to actual values compared to whose answer are further away. In a way it will help the SFT model to learn latent 
+| Risk | Description | Mitigation |
+|------|-------------|------------|
+| **Data Leakage** | The model may inadvertently learn from Wave 4 responses or summaries containing future information, leading to overly optimistic evaluation results. | Strict participant-level and temporal data split. Use only Waves 1–3 for training and validation. Exclude all Wave 4 responses, summaries, and derived personas from training. |
+| **Memorization instead of Behavioral Reasoning** | The model may memorize question-answer pairs rather than learning stable behavioral patterns and decision-making strategies. | Train on historical behavior only, evaluate on unseen Wave 4 questions, use LoRA with early stopping, and compare against zero-shot and retrieval baselines. |
+| **Long Context Overflow** | Historical Q&A for a participant may exceed the model's context window, causing truncation and loss of important behavioral information. | Evaluate full-context models, retrieval-augmented generation (RAG), hierarchical summarization, and prompt compression techniques such as LLMLingua. |
+| **Information Loss from Compression** | Persona summaries or compressed prompts may omit behavioral signals necessary for accurate prediction. | Compare compressed and full-context approaches, and retrieve the most relevant historical Q&A alongside summaries. |
+| **Question Type Imbalance** | Multiple-choice questions dominate the dataset, while Matrix, Text Entry, and Database questions are relatively scarce. | Use balanced sampling, weighted losses, or report performance separately for each question type in addition to overall metrics. |
+| **Overfitting during Fine-Tuning** | The model may fit the training participants too closely, reducing generalization to unseen participants or future responses. | Apply LoRA/QLoRA, weight decay, dropout, early stopping, validation monitoring, and checkpoint selection based on validation performance. |
+| **Instruction Bias** | Instruction-tuned models may rely on generic conversational priors rather than participant-specific behavioral patterns. | Compare base and instruction-tuned models under identical training settings and select the model with better behavioral consistency. |
+| **Human Response Variability** | Human responses are not perfectly consistent across survey waves, limiting the maximum achievable model performance. | Report Human–Human agreement (Wave 1–3 vs. Wave 4) as an upper-bound benchmark alongside Human–Model agreement. |
+| **Invalid Answer Generation** | Generative models may produce responses outside the valid answer space (e.g., unsupported options for multiple-choice questions). | Constrain decoding to valid answer choices or rank candidate answers instead of free-text generation whenever possible. |
+| **Class Imbalance** | Certain answer choices may occur much more frequently than others, biasing the model toward majority classes. | Monitor per-class performance, use class-balanced sampling or weighted losses, and evaluate with chance-corrected metrics such as Cohen's κ. |
+| **Scalability and Inference Cost** | Large-context models require significant GPU memory and have high inference latency. | Evaluate retrieval-based context selection, prompt compression, smaller fine-tuned models, and context pruning to reduce computational cost. |
+| **Domain Generalization** | The model may learn survey-specific patterns that do not generalize to other behavioral tasks or domains. | Evaluate across different behavioral categories (pricing, cognitive biases, preferences, etc.) and report per-domain performance to identify weaknesses. |
 
 
-
-###### Risk and Mitigations
-SFT Fine Tune model stops learning human behavior and memorizes.
-
-
-### Executing Models
+### Run Models
 
 #### Prerequisites
+
 ```
 # Get Pip
 sudo apt update && sudo apt install python3-pip -y
