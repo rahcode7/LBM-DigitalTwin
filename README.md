@@ -479,15 +479,15 @@ A good baseline could be randomly guessing the answers as the base model should 
 
 ### Retail and E Commerce
 
-**Personalized Recommendation in Ecommerce**
+##### 1. Personalized Recommendation in Ecommerce
 It can be used to deliver better personalized and psycological recommendations of items to the user based on an ecommerce website compared to the traditional recommendation systems.
 It also solves the problem of cold start in ecommerce web, where we can generate meaningful recommendations to a user even if they haven't typed a query yet. 
 
-**Predictive Inventory Management** 
+##### 2. Predictive Inventory Management
 
 The digital twin models can update the consumer behavior representations on continous basis and then can be used to forecast their future purchasing intent. This helps in anticipating and optimizing the supply chain and efficient inventory management.
 
-**New Product Launch**
+##### 3. New Product Launch
 Digital Twins can help simulate how certain demographics or segments will react to a new product. This can help save both money and time in conducting market research studies before a new product launch.
 
 ### Clinical Research
