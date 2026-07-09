@@ -415,20 +415,11 @@ In addition to accuracy based evaluation metrics mentioned for Matrix and Multip
 we can measure the Cohen's Weighted Kappa.
 
 2. **Cohen's Kappa**
-   For Binary Multiple Choice (MC) , where we have yes or no type of answer, we can utilize Cohens' Kappa to measure agreement among 2 set of responses of the same human. Its range is in -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
+   - For Binary Multiple Choice (MC) , where we have yes or no type of answer, we can utilize Cohens' Kappa to measure agreement among 2 set of responses of the same human. Its range is in -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
+    
+   - The Metric can be defined as : k = Observed Agreement - Expected Agreement
 
-   -  Example Binary MC Question :
-        
-    ```
-         "QuestionID": "QID9_10",
-        "QuestionText": "Please consider the following product category: Lunchmeat - Sliced - Refrigerated. Suppose you are in a grocery store, and you see the following product in that category: Oscar Mayer Chopped Ham & Water product Deli Lunch Meat, 16 Oz Package. The product is priced at: $0.87. Would you or would you not purchase this product?",
-        "QuestionType": "MC",
-        "Options": [
-        "Yes, I would purchase the product",
-        "No, I would not purchase the product"
-        ]
-    `
-    ``
+`
 #### Performance Ceiling  
 The test-retest reliability metrics can serve as the ceiling criteria for benchmarking the models. For the 2 question types Multiple Choice and Matrix type question, we can ......
 
