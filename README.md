@@ -308,6 +308,31 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     - **Target Variable** - `wave4_Q_wave4_A`'s `selected_answer` column from `Wave Split` folder
     - **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these tokens as -100.
 - Key Hyperparameters
+ 
+| Hyperparameter | Used Value | Description |
+|---------------|------------------:|-------------|
+| **Base Model** |Qwen/Qwen3-0.6B | Decoder-only transformer used as the foundation model. |
+| **Fine-Tuning Method** | LoRA | Parameter-efficient fine-tuning by updating low-rank adapter matrices only. |
+| **LoRA Rank (`r`)** | 8 | Controls the capacity of the LoRA adapters. Higher values increase trainable parameters. |
+| **LoRA Alpha (`lora_alpha`)** | 16 | Scaling factor for LoRA updates. Commonly set to `2 × r`. |
+| **LoRA Dropout** | 0.05 | Dropout applied to LoRA layers to reduce overfitting. |
+| **Target Modules** | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` | Apply LoRA to both attention and MLP layers for best adaptation. |
+| **Learning Rate** | 2e-5 | Initial learning rate for LoRA parameters. |
+| **LR Scheduler** | Cosine | Smoothly decays the learning rate during training. |
+| **Warmup Ratio** | 0.10 | Warmup for the first 10% of training steps. |
+| **Optimizer** | AdamW | Optimizer with decoupled weight decay. |
+| **Weight Decay** | 0.01 | Regularization to reduce overfitting. |
+| **Number of Epochs** |3 | Train until validation loss converges. |
+| **Per-Device Batch Size** | 2–8 | Depends on GPU memory and context length. |
+| **Gradient Accumulation Steps** | 8–32 | Increases the effective batch size without additional GPU memory. |
+| **Effective Batch Size** | 64–256 | Product of per-device batch size × gradient accumulation × number of GPUs. |
+| **Maximum Sequence Length** | 4,096 tokens | Depends on available GPU memory and average participant history length. |
+| **Loss Function** | Cross-Entropy Loss | Predict the target answer tokens. |
+| **Mixed Precision** | BF16 (preferred) / FP16 | Reduces GPU memory usage and speeds up training. |
+| **Gradient Checkpointing** | Enabled | Trades additional computation for lower memory usage. |
+| **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) | Produces deterministic predictions for behavioral evaluation. |
+
+
 
   Thinking Mode - disabled
 
@@ -337,17 +362,11 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | Risk | Description | Mitigation |
 |------|-------------|------------|
 | **Data Leakage** | The model may inadvertently learn from Wave 4 responses or summaries containing future information, leading to overly optimistic evaluation results. | Strict participant-level and temporal data split. Use only Waves 1–3 for training and validation. Exclude all Wave 4 responses, summaries, and derived personas from training. |
-| **Memorization instead of Behavioral Reasoning** | The model may memorize question-answer pairs rather than learning stable behavioral patterns and decision-making strategies. | Train on historical behavior only, evaluate on unseen Wave 4 questions, use LoRA with early stopping, and compare against zero-shot and retrieval baselines. |
-| **Long Context Overflow** | Historical Q&A for a participant may exceed the model's context window, causing truncation and loss of important behavioral information. | Evaluate full-context models, retrieval-augmented generation (RAG), hierarchical summarization, and prompt compression techniques such as LLMLingua. |
 | **Information Loss from Compression** | Persona summaries or compressed prompts may omit behavioral signals necessary for accurate prediction. | Compare compressed and full-context approaches, and retrieve the most relevant historical Q&A alongside summaries. |
 | **Question Type Imbalance** | Multiple-choice questions dominate the dataset, while Matrix, Text Entry, and Database questions are relatively scarce. | Use balanced sampling, weighted losses, or report performance separately for each question type in addition to overall metrics. |
 | **Overfitting during Fine-Tuning** | The model may fit the training participants too closely, reducing generalization to unseen participants or future responses. | Apply LoRA/QLoRA, weight decay, dropout, early stopping, validation monitoring, and checkpoint selection based on validation performance. |
-| **Instruction Bias** | Instruction-tuned models may rely on generic conversational priors rather than participant-specific behavioral patterns. | Compare base and instruction-tuned models under identical training settings and select the model with better behavioral consistency. |
-| **Human Response Variability** | Human responses are not perfectly consistent across survey waves, limiting the maximum achievable model performance. | Report Human–Human agreement (Wave 1–3 vs. Wave 4) as an upper-bound benchmark alongside Human–Model agreement. |
-| **Invalid Answer Generation** | Generative models may produce responses outside the valid answer space (e.g., unsupported options for multiple-choice questions). | Constrain decoding to valid answer choices or rank candidate answers instead of free-text generation whenever possible. |
-| **Class Imbalance** | Certain answer choices may occur much more frequently than others, biasing the model toward majority classes. | Monitor per-class performance, use class-balanced sampling or weighted losses, and evaluate with chance-corrected metrics such as Cohen's κ. |
-| **Scalability and Inference Cost** | Large-context models require significant GPU memory and have high inference latency. | Evaluate retrieval-based context selection, prompt compression, smaller fine-tuned models, and context pruning to reduce computational cost. |
-| **Domain Generalization** | The model may learn survey-specific patterns that do not generalize to other behavioral tasks or domains. | Evaluate across different behavioral categories (pricing, cognitive biases, preferences, etc.) and report per-domain performance to identify weaknesses. |
+| **Hallucinated Answer Generation** | Generative models may produce responses outside the valid answer space (e.g., unsupported options for multiple-choice questions). | Constrain decoding to valid answer choices or rank candidate answers instead of free-text generation whenever possible. |
+
 
 
 ### Running LLM Training & Inference Jobs
