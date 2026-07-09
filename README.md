@@ -409,26 +409,17 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
 # Section 3 Evaluation
 #### Evaluation Metrics 
 
-In addition to accuracy based evaluation metrics mentioned for Matrix and Multiple Choice Question, we can also measure the correlation amonng Human test-restests and LLM Model vs Human Responses. 
+In addition to accuracy based evaluation metrics mentioned for Matrix and Multiple Choice Question, we can also measure the agreement amonng Human test-restests (Wave1-3 vs Wave4 answer)(Set 1) and LLM Model vs Human Responses in Wave 4 (Set 2)
 
-2. **Correlation (For Matrix Type Questions)**
-    - For Matrix type questions having likert scales, we can measure pearson correlation.
-    - It should be measure for the following sets - 
-        - Set 1. The correlation between human's answers in Wave1-3 vs Wave4 answer to check their agreement with themselves.
-        - Set 2. The correlation between human's answers in Wave 4 vs Digital Twin model.
+1. **Cohen's Weighted Kappa** - As both Matrix and MC Question have likert scales questions, 
+we can measure the Cohen's Weighted Kappa.
 
-3. **Cohen's Kappa (For Multiple Choice Questions)**
-    We should also measure the agreement between the following sets  
-    - Set 1. The correlation between human's answers in Wave1-3 vs Wave4 answer to check their agreement with themselves.
-    - Set 2 . The correlation between human's answers in Wave 4 vs Digital Twin model.
-    - Multiple choice questions have 2 types of answers, binary or ordered.
-        - **Type 1 : Binary Answers**
-        In the example question, if it a binary yes or no type of question.
+2. **Cohen's Kappa**
+   For Binary Multiple Choice (MC) , where we have yes or no type of answer, we can utilize Cohens' Kappa to measure agreement among 2 set of responses of the same human. Its range is in -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
 
-          Metric :  Cohen's Kappa
-         Range  : -1 to 1, with >0.8 rating considered perfect agreement and <0 considered poor
-
-        ```
+   -  Example Binary MC Question :
+        
+    ```
          "QuestionID": "QID9_10",
         "QuestionText": "Please consider the following product category: Lunchmeat - Sliced - Refrigerated. Suppose you are in a grocery store, and you see the following product in that category: Oscar Mayer Chopped Ham & Water product Deli Lunch Meat, 16 Oz Package. The product is priced at: $0.87. Would you or would you not purchase this product?",
         "QuestionType": "MC",
@@ -436,27 +427,8 @@ In addition to accuracy based evaluation metrics mentioned for Matrix and Multip
         "Yes, I would purchase the product",
         "No, I would not purchase the product"
         ]
-        ```
-
-        - **Type 2 : Ordinal Answers** - In the example Question we have order in the range from I am so sad or unhappy that I can't stand it -> I don't feel sad. 
-           
-           Metric :  Cohen's Weighted Kappa
-
-         ```
-        "QuestionID": "QID126",
-        "QuestionText": "",
-        "QuestionType": "MC",
-        "Options": [
-        "I don't feel sad",
-        "I feel sad",
-        "I am sad all the time and I can't snap out of it",
-        "I am so sad or unhappy that I can't stand it"
-        ]
-        ```
-            
-       
-        ```
-
+    `
+    ``
 #### Performance Ceiling  
 The test-retest reliability metrics can serve as the ceiling criteria for benchmarking the models. For the 2 question types Multiple Choice and Matrix type question, we can ......
 
