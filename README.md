@@ -312,6 +312,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | Hyperparameter | Used Value | Description |
 |---------------|------------------:|-------------|
 | **Base Model** |Qwen/Qwen3-0.6B | Decoder-only transformer used as the foundation model. |
+| **Thinking Molde** |False | Just emits final answer |
 | **Fine-Tuning Method** | LoRA | Parameter-efficient fine-tuning by updating low-rank adapter matrices only. |
 | **LoRA Rank (`r`)** | 8 | Controls the capacity of the LoRA adapters. Higher values increase trainable parameters. |
 | **LoRA Alpha (`lora_alpha`)** | 16 | Scaling factor for LoRA updates. Commonly set to `2 × r`. |
