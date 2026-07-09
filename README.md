@@ -244,6 +244,8 @@ The dataset doesn't contain even number of question per category. Cognitive test
 ### Limitations
 1. Unavailabilty of Real World Bheavior Dataset - Actual Dataset represent users answers in a survey setting, while their actual behavior like purchases, which can be different is missing. This actual data can be extremely valuable to predict their future behavior.
 
+2. Small Sample Size - 500 people is a very small sample size to simulate the human behavior 
+of the actual population which can be millions of people. (For Example, extrapolating to 1 Million people means that this dataset represent only 0.05 percent of the actual population) 
 
 # Section 2 Modelling Strategy
 
@@ -473,8 +475,27 @@ A good baseline could be randomly guessing the answers as the base model should 
 - To measure generatization, we should split at the `participant_id` level to prevent target leakage. The splits I am going with is splits at 70/10/20 for train,validation and test set respectively.
 
 
-# Section 4 Business Application 
-Text write up
+# Section 4 Business Applications 
+
+### Retail and E Commerce
+
+**Personalized Recommendation in Ecommerce**
+It can be used to deliver better personalized and psycological recommendations of items to the user based on an ecommerce website compared to the traditional recommendation systems.
+It also solves the problem of cold start in ecommerce web, where we can generate meaningful recommendations to a user even if they haven't typed a query yet. 
+
+**Predictive Inventory Management** 
+
+The digital twin models can update the consumer behavior representations on continous basis and then can be used to forecast their future purchasing intent. This helps in anticipating and optimizing the supply chain and efficient inventory management.
+
+**New Product Launch**
+Digital Twins can help simulate how certain demographics or segments will react to a new product. This can help save both money and time in conducting market research studies before a new product launch.
+
+### Clinical Research
+
+
+
+
+
 # Section 5 Long run maintenance 
 
 ###### Model Artifacts 
