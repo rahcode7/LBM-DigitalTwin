@@ -250,7 +250,7 @@ of the actual population which can be millions of people. (For Example, extrapol
 # Section 2 Modelling Strategy
 
 
-###### Context Handling
+### 2.1 Context Handling
 
 
 - Large context size - Summaries or how to handle full text
@@ -258,18 +258,15 @@ of the actual population which can be millions of people. (For Example, extrapol
     - LLMLingua
 - Base model -base, instruction tuned model ?
 
-##### Sampling Strategy for context window
-
-###### Q&A Arrangenment
-
-
-###### Compressing techniques
 Larger model can compress input prompt and provide the input to the smalle
+
+
+### 2.2 Dataset Splits
 
 
 ### 2.3 Modelling Techniques
 
-### LLM for target prediction
+### LLM for Answer prediction
 #### 1. Baseline Model
 Baseline model will be a 0 shot version of the LLM model we choose. 
 
@@ -296,11 +293,10 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     loss functions and monitoring of trained models.
     - Model Overfitting : The model starts to memorize the training dataset more, instead of learning
 
-#### 3. Reinforcement Learning With Human Feedback
+#### 3. Reinforcement Learning With Verifiable Rewards (RLVR)
 - As the answers have a fixed deterministic range, we can reward the model by
     - Higher Rewards - If predicted answers are more closer to actual values 
     - Lower Rewards - If the model outputs are far from the actual answer
-
 - Advantages 
     - SFT has limitation that CE Loss function learns to classify the answer, but doesn't know if an answer of 1 is how much bettern than an answer of 7 for a 1 to 10 range answer, which RLVR can help mitigate
     - It also align the base model by changing its weight distribution in order to answer more like human would
@@ -359,8 +355,6 @@ wandb login
 API Key ce18e8ae96d72cd78a7a54de441e9657bc0a913d
 
 ```
-
-##### Sampling Technique
 
 
 ##### Current Sampled dataset statstics
