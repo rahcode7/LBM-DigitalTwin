@@ -540,7 +540,11 @@ Condition 2 Model degrades in performance in terms of the overall accuracy
 
 
 # Section 6 Modelling Codes
-# Start SFT plan
+
+Next Add graphs , report, results etc for random baseline etc
+
+#### Todos/ Next Steps
+
 
 
 ###### References
@@ -555,11 +559,3 @@ https://numiqo.com/tutorial/cohens-kappa
 https://numiqo.com/tutorial/weighted-cohens-kappa
 
 
-
-#### Todos/ Next Steps
-**Training script**
--  Dynamically sample number of personas and questions per persona for train/test/validation sets.
-
-** Context Processing**
-1. Before preparing the final prompt, Descriptive blocks should be appended to the corresponding questions and then added to the context.
-2. Waves numbers (1,2,3) can be added to separate the set of questions of different waves as they represent different period of time.
