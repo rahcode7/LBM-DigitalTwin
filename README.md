@@ -277,7 +277,7 @@ We use the text field `wave1_3_persona_json` as the main field to create the use
 
 
 #### Proposed approaches to handle large context length
-- **Sampling Question & Answers** - As there are different question type and block names,we can sample Q&A for each question type or block names, instead of utilizing all the questions. Given a chosen context length, like 4096, we can sample a certain number of questions from each question category and then pass to the model.This is the approach currently implemented
+- **Sampling Question & Answers** - As there are different question type and block names,we can sample Q&A for each question type or block names, instead of utilizing all the questions. Given a chosen context length, like 4096, we can sample a certain number of questions from each question category using **stratified sampling** and then pass to the model.This is the approach currently implemented
 - **Summarize Demographics Q&A using LLMs** - The demographics Q&A can be shortened by creating an abstract summary representation by using another LLM model.
 - **Prompt Based Compression using LLMs** 
     - We can utilize libraries like LLMLingua, which can compress a prompt upto 20X lesser tokens by removing the non-essential tokens. Although it needs to be explored how it will perform for Q&A set up like ours.
@@ -326,7 +326,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Number of Epochs** | 3 | Train until validation loss converges. |
 | **Per-Device Batch Size** | 1 | Depends on GPU memory and context length. |
 | **Gradient Accumulation Steps** | 4 | Increases the effective batch size without additional GPU memory. |
-| **Effective Batch Size** | 4 | Product of per-device batch size × gradient accumulation × number of GPUs. |
+| **Effective Batch Size** | 4 | Product of per-device batch size × gradient accumulation × number of GPUs (1) |
 | **Maximum Sequence Length** | 4,096 tokens | Depends on available GPU memory and average participant history length. |
 | **Loss Function** | Cross-Entropy Loss | Predict the target answer tokens. |
 | **Mixed Precision** | BF16 (preferred) / FP16 | Reduces GPU memory usage and speeds up training. |
