@@ -521,6 +521,9 @@ I split the dataset by 500 person ids as train, val and test and then pick
     | Test  | 1 | 84 | 84
 
 
+- Train and Validation sets are used for LLM model training 
+- Test Set is used to report the evaluation metrics
+
 #### 2. Context Processing 
 I used the context length of 4096 for experimentation. And token budget is allocated as follows.
 
@@ -579,7 +582,7 @@ accelerate launch --num_processes 1 src/models/train.py \
 ```
 
 ##### Run Inference
-Inference on Wave 4 dataset of unseen persona
+We now run the inference on Wave4 dataset Questions created in test set.
 
 ```
 cd lbm
