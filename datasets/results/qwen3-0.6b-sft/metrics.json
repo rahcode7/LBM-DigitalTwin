@@ -1,0 +1,32 @@
+{
+    "Overall": {
+        "total_questions": 53,
+        "exact_match_accuracy": 9.43,
+        "exact_match_human_ceiling": 80.0,
+        "norm_acc_human_ceiling": 0.96,
+        "norm_acc_model": 0.44,
+        "norm_acc_random": 0.52
+    },
+    "MC_Ordinal": {
+        "total_questions": 8,
+        "exact_match_accuracy": 37.5,
+        "exact_match_human_ceiling": 50.0,
+        "norm_acc_human_ceiling": 0.9,
+        "norm_acc_model": 0.1,
+        "norm_acc_random": 0.8,
+        "kappa_human_ceiling": 0.6667,
+        "kappa_model": 0.0,
+        "kappa_random": 0.6667
+    },
+    "MC_Binary": {
+        "total_questions": 45,
+        "exact_match_accuracy": 4.44,
+        "exact_match_human_ceiling": 100.0,
+        "norm_acc_human_ceiling": 1.0,
+        "norm_acc_model": 0.6667,
+        "norm_acc_random": 0.3333,
+        "kappa_human_ceiling": 1.0,
+        "kappa_model": 0.0,
+        "kappa_random": 0.0
+    }
+}

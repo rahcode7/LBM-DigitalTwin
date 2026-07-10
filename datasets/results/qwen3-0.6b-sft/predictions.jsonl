@@ -1,0 +1,84 @@
+{"pid": 613, "question_id": "QID287_0", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_1", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_2", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_3", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_4", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_5", "target_answer": "Somewhat support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_6", "target_answer": "Strongly support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_7", "target_answer": "Strongly support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID287_8", "target_answer": "Somewhat oppose", "predicted_answer": "Strongly oppose"}
+{"pid": 613, "question_id": "QID287_9", "target_answer": "Neither oppose nor support", "predicted_answer": "Strongly support"}
+{"pid": 613, "question_id": "QID158", "target_answer": "I slightly favor program B", "predicted_answer": "I slightly favor program B, I slightly favor program B"}
+{"pid": 613, "question_id": "QID160_0", "target_answer": "Somewhat probable", "predicted_answer": "Very probable"}
+{"pid": 613, "question_id": "QID160_1", "target_answer": "Somewhat probable", "predicted_answer": "Very probable"}
+{"pid": 613, "question_id": "QID160_2", "target_answer": "Somewhat probable", "predicted_answer": "Very probable"}
+{"pid": 613, "question_id": "QID161", "target_answer": "Correct, all things considered", "predicted_answer": "Correct, all things considered"}
+{"pid": 613, "question_id": "QID165", "target_answer": "fewer", "predicted_answer": "fewer"}
+{"pid": 613, "question_id": "QID169", "target_answer": "less", "predicted_answer": "less"}
+{"pid": 613, "question_id": "QID173", "target_answer": "Disagree a little", "predicted_answer": "Disagree a little"}
+{"pid": 613, "question_id": "QID176", "target_answer": "Agree strongly", "predicted_answer": "Agree strongly"}
+{"pid": 613, "question_id": "QID179", "target_answer": "very likely", "predicted_answer": "very unlikely"}
+{"pid": 613, "question_id": "QID184", "target_answer": "No", "predicted_answer": "Yes, No"}
+{"pid": 613, "question_id": "QID190", "target_answer": "$1,000,000", "predicted_answer": "$1,000,000 or more"}
+{"pid": 613, "question_id": "QID193", "target_answer": "11% probability of one million dollars 89% probability of nothing", "predicted_answer": "11% probability of one million dollars 89% probability of nothing, 10% probability of five million dollars 90% probability of nothing"}
+{"pid": 613, "question_id": "QID195", "target_answer": "yes", "predicted_answer": "definitely no"}
+{"pid": 613, "question_id": "QID198_0", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_1", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_2", "target_answer": "2", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_3", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_4", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_5", "target_answer": "2", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_6", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_7", "target_answer": "2", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_8", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID198_9", "target_answer": "1", "predicted_answer": "1"}
+{"pid": 613, "question_id": "QID288_0", "target_answer": "very beneficial", "predicted_answer": "very beneficial"}
+{"pid": 613, "question_id": "QID288_1", "target_answer": "low benefit", "predicted_answer": "very beneficial"}
+{"pid": 613, "question_id": "QID288_2", "target_answer": "slightly beneficial", "predicted_answer": "very beneficial"}
+{"pid": 613, "question_id": "QID288_3", "target_answer": "slightly beneficial", "predicted_answer": "very beneficial"}
+{"pid": 613, "question_id": "QID289_0", "target_answer": "low risk", "predicted_answer": "very risky"}
+{"pid": 613, "question_id": "QID289_1", "target_answer": "moderately risky", "predicted_answer": "very risky"}
+{"pid": 613, "question_id": "QID289_2", "target_answer": "very risky", "predicted_answer": "very risky"}
+{"pid": 613, "question_id": "QID289_3", "target_answer": "very risky", "predicted_answer": "very risky"}
+{"pid": 613, "question_id": "QID291", "target_answer": "I would probably take the vaccine. I would thus accept the 5% chance of dying from the weaker flu in the vaccine", "predicted_answer": "I would probably take the vaccine. I would thus accept the 5% chance of dying from the weaker flu in the vaccine."}
+{"pid": 613, "question_id": "QID196", "target_answer": "the small tray", "predicted_answer": "the large tray"}
+{"pid": 613, "question_id": "QID9_1", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_2", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_3", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_4", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_5", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_6", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_7", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_8", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_9", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_10", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_11", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_12", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_13", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_14", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_15", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_16", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_17", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_18", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_19", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_20", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_21", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_22", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_23", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_24", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_25", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_26", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_27", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_28", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_29", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_30", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_31", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_32", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_33", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_34", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_35", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_36", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_37", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_38", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_39", "target_answer": "No, I would not purchase the product", "predicted_answer": "Yes, I would purchase the product."}
+{"pid": 613, "question_id": "QID9_40", "target_answer": "Yes, I would purchase the product", "predicted_answer": "Yes, I would purchase the product."}
