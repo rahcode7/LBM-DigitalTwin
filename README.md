@@ -605,6 +605,12 @@ export MODEL_DIR='qwen3-0.6b-sft'
 python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predictions.jsonl" --metrics_path datasets/results/$MODEL_DIR/metrics.json
 ```
 
+#### Model Report
+
+##### Training and Eval Loss Curves
+
+![Alt text string](datasets/results/qwen3-0.6b-sft/loss_plots.png)
+
 #### Evaluation Report
 
 Final Metrics Report
@@ -614,39 +620,12 @@ Final Metrics Report
 
 
 ### Sample Evaluation Results
---- OVERALL ---
-Total Evaluated  : 80
-Exact Match Acc  : 10.00% (Model)
-
---- MATRIX ---
-Total Evaluated  : 67
-Exact Match Acc  : 8.96% (Model)
-Mean Abs Dev     : 1.6667 (Model)
-Mean Abs Dev     : 1.5556 (Random Baseline)
-Set 2 W. Kappa  : 0.4179 (Model)
-Set 3 W. Kappa  : 0.2936 (Random Baseline)
-
---- MC_ORDINAL ---
-Total Evaluated  : 8
-Exact Match Acc  : 12.50% (Model)
-Mean Abs Dev     : 0.8000 (Model)
-Mean Abs Dev     : 0.8000 (Random Baseline)
-Set 2 W. Kappa  : 0.5312 (Model)
-Set 3 W. Kappa  : 0.6667 (Random Baseline)
-Set 1 W. Kappa  : 0.7619 (Human Ceiling)
-
---- MC_BINARY ---
-Total Evaluated  : 5
-Exact Match Acc  : 20.00% (Model)
-Mean Abs Dev     : 0.6667 (Model)
-Mean Abs Dev     : 0.6667 (Random Baseline)
-Set 2 Kappa     : -0.5000 (Model)
-Set 3 Kappa     : 0.0000 (Random Baseline)
-Set 1 Kappa     : 0.0000 (Human Ceiling)
-
-
-Next Add wandb graphs 
-
+| Question Type | # Evaluated | Exact Match Accuracy | Mean Absolute Deviation ↓ | Random MAD ↓ | Human–Model Agreement | Random Agreement |
+|---------------|------------:|---------------------:|--------------------------:|--------------:|----------------------:|-----------------:|
+| **Overall** | **84** | **20.24%** | – | – | – | – |
+| **Matrix (Likert)** | 71 | 16.90% | **1.0645** | 1.6774 | **Weighted κ = 0.6809** | Weighted κ = 0.1399 |
+| **MC (Ordinal)** | 8 | 37.50% | **2.2500** | **1.2500** | Weighted κ = **-0.1818** | **Weighted κ = 0.2857** |
+| **MC (Binary)** | 5 | 40.00% | **0.3333** | 1.0000 | **κ = 0.0000** | κ = -0.8000 |
 
 
 #### Todos/ Next Steps
