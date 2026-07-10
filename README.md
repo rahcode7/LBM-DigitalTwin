@@ -620,13 +620,12 @@ Final Metrics Report
 
 
 ### Sample Evaluation Results
-| Question Type | # Evaluated | Exact Match Accuracy | Mean Absolute Deviation ↓ | Random MAD ↓ | Human–Model Agreement | Random Agreement |
-|---------------|------------:|---------------------:|--------------------------:|--------------:|----------------------:|-----------------:|
-| **Overall** | **84** | **20.24%** | – | – | – | – |
-| **Matrix (Likert)** | 71 | 16.90% | **1.0645** | 1.6774 | **Weighted κ = 0.6809** | Weighted κ = 0.1399 |
-| **MC (Ordinal)** | 8 | 37.50% | **2.2500** | **1.2500** | Weighted κ = **-0.1818** | **Weighted κ = 0.2857** |
-| **MC (Binary)** | 5 | 40.00% | **0.3333** | 1.0000 | **κ = 0.0000** | κ = -0.8000 |
-
+| Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
+|---------------|------------:|------------------------------------:|----------------------------:|--------------------------------------:|----------------:|----------------:|-----------------:|
+| **Overall** | **53** | **97.14%** | **60.00%** | **37.14%** | – | – | – |
+| **Matrix (Likert)** | 40 | – | – | – | – | – | – |
+| **MC (Ordinal)** | 8 | **95.00%** | **55.00%** | **40.00%** | **Weighted κ = 0.9000** | **Weighted κ = -0.1818** | **Weighted κ = -0.2414** |
+| **MC (Binary)** | 5 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
 
 #### Todos/ Next Steps
 
