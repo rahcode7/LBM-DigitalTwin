@@ -616,20 +616,27 @@ python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predict
 Final Metrics Report
 - File Path - `datasets/results/$MODEL_DIR`
 - File Name - `metrics.json`
-
+- Predictions File - `datasets/results/qwen3-0.6b-sft/predictions.jsonl`
 
 
 ### Sample Evaluation Results
 For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to measure the test-retest accuracy and reliability w.r.t the current wave 4 answers. Only the Q&A which were found in previouse wave1_3 are subsetted and all the metrics are reported for those commoon Q&A. So out of 84 Q&A, I found 53 Q&A which were common in both.
 
+We can compare the accuracy of the questions w.r.t the human ceiling and then comparing it with random baselines and the model performance.
+
+We can compare the reliability of the answer w.r.t the human ceiling and then comparing it with random baselines and the model performance.
 
 
 | Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
 |---------------|------------:|------------------------------------:|----------------------------:|--------------------------------------:|----------------:|----------------:|-----------------:|
-| **Overall** | **53** | **97.14%** | **60.00%** | **37.14%** | – | – | – |
-| **Matrix (Likert)** | 40 | – | – | – | – | – | – |
-| **MC (Ordinal)** | 8 | **95.00%** | **55.00%** | **40.00%** | **Weighted κ = 0.9000** | **Weighted κ = -0.1818** | **Weighted κ = -0.2414** |
-| **MC (Binary)** | 5 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
+| **Overall** | **53** | **96.00%** | **44.00%** | **52.00%** | – | – | – |
+| **MC (Ordinal)** | 8 | **90.00%** | **10.00%** | **80.00%** | **Weighted κ = 0.6667** | **Weighted κ = 0.0000** | **Weighted κ = 0.6667** |
+| **MC (Binary)** | 45 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
+
+Bugs (Didnt got time to fix those): 
+1. Matrix answer not mapping to predictions.jsonl 
+2. Transformation of the text answer to a numerical scale for computing Kappa scores,
+
 
 #### Todos/ Next Steps
 
