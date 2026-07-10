@@ -620,7 +620,8 @@ Final Metrics Report
 
 
 ### Sample Evaluation Results
-For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to measure the test-retest accuracy and reliability w.r.t the current wave 4 answers.
+For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to measure the test-retest accuracy and reliability w.r.t the current wave 4 answers. Only the Q&A which were found in previouse wave1_3 are subsetted and all the metrics are reported for those commoon Q&A. So out of 84 Q&A, I found 53 Q&A which were common in both.
+
 
 
 | Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
