@@ -507,7 +507,7 @@ needs to demonstrate that your end-to-end loop (data → train → eval) actuall
 reason about results from a tiny model. Include clear run instructions.
 
 ### Set Up
-#### Dataset
+#### 1. Dataset
 I split the dataset by 500 person ids as train, val and test and then pick 
 - 8 persons from train,1 person from val and 1 person from test set
 - Then sample 20 Question from train and validation
@@ -521,7 +521,7 @@ I split the dataset by 500 person ids as train, val and test and then pick
     | Test  | 1 | 84 | 84
 
 
-#### Context Processing 
+#### 2. Context Processing 
 I used the context length of 4096 for experimentation. And token budget is allocated as follows.
 
 1. System Prefix 
@@ -540,10 +540,10 @@ I used the context length of 4096 for experimentation. And token budget is alloc
     - This is appended at the end
     - All tokens are used
 
-### Model Used
+#### 3. Model Used
 `Qwen3 0.6b`
 
-### Hyperparameters Set up
+#### 4. Hyperparameters Set up
 See Section 2 subsection Key Hyperparameters
 
 ### Running Training,Inferenece and Evals
