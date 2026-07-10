@@ -620,6 +620,9 @@ Final Metrics Report
 
 
 ### Sample Evaluation Results
+For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to measure the test-retest accuracy and reliability w.r.t the current wave 4 answers.
+
+
 | Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
 |---------------|------------:|------------------------------------:|----------------------------:|--------------------------------------:|----------------:|----------------:|-----------------:|
 | **Overall** | **53** | **97.14%** | **60.00%** | **37.14%** | – | – | – |
