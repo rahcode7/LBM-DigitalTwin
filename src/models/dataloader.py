@@ -5,18 +5,18 @@ from transformers import PreTrainedTokenizer
 def format_and_tokenize_chatml(example, tokenizer: PreTrainedTokenizer, max_seq_length: int = 2048):
     """
     Formats text into ChatML, applies Middle Truncation to preserve demographics,
-    and manually creates the -100 label mask to bypass collator bugs.
+    and manually creates the -100 label mask 
     """
     # 1. Protect the System Prefix (The Static State)
     # This prevents the demographic traits from being blindly deleted by standard truncation.
-    prefix = "You are a digital twin. Here is the user's historical survey data:\n\n"
+    prefix = "You are a digital twin. Here is the user's historical survey data containing demographic and behavioral questions and corresponding answers:\n\n"
     raw_history = example["system_context"].replace(prefix, "")
 
     # 2. Tokenize the Target Answer
     answer_text = str(example["target_answer"])
     answer_ids = tokenizer(answer_text, add_special_tokens=False)["input_ids"]
 
-    # Add EOS if missing
+    # Add EOS if missing. 
     if len(answer_ids) == 0 or answer_ids[-1] != tokenizer.eos_token_id:
         answer_ids.append(tokenizer.eos_token_id)
 
@@ -49,7 +49,7 @@ def format_and_tokenize_chatml(example, tokenizer: PreTrainedTokenizer, max_seq_
         prompt_messages,
         tokenize=False,
         add_generation_prompt=True,   # Leaves the assistant header ready
-        enable_thinking=False,
+        enable_thinking=False
     )
 
     prompt_ids = tokenizer(prompt_text, add_special_tokens=False)["input_ids"]
@@ -71,7 +71,7 @@ def format_and_tokenize_chatml(example, tokenizer: PreTrainedTokenizer, max_seq_
         "labels": labels,
     }
 
-def get_qwen_dataloaders(train_path: str, val_path: str, tokenizer: PreTrainedTokenizer, max_seq_length: int = 2048):
+def get_qwen_dataloaders(train_path: str, val_path: str, tokenizer: PreTrainedTokenizer, max_seq_length: int = 4096):
     if not os.path.exists(train_path) or not os.path.exists(val_path):
         raise FileNotFoundError("Dataset splits not found. Check your file paths.")
 

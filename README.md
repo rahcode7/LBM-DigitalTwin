@@ -407,66 +407,6 @@ For prototyping, the dataset is as following
 - Prepare this data as   
         ``` python src/models/data-prep.py ```
 
-#### 3. LLM SFT Model Training 
-
-```
-cd lbm
-
-export MODEL_DIR='qwen3-0.6b-sft'
-rm -rf checkpoints/$MODEL_DIR
-mkdir checkpoints checkpoints/$MODEL_DIR  checkpoints/$MODEL_DIR/logs
-
-export DATA_DIR='datasets/datasplits'
-mkdir datasets/datasplits
-mkdir datasets/results datasets/results/$MODEL_DIR
-
-accelerate launch --num_processes 1 src/models/train.py \
-    --train_data_path ""$DATA_DIR"/train_10P_5Q.jsonl" \
-    --val_data_path "datasets/datasplits/val_1P_5Q.jsonl" \
-    --output_dir "checkpoints/$MODEL_DIR" \
-    --model_id "Qwen/Qwen3-0.6B" \
-    --batch_size 1 \
-    --grad_accum 4 \
-    --epochs 1 \
-    --learning_rate 2e-5 \
-    --lora_r 8 \
-    --lora_alpha 16 \
-    --wandb_project "LBM-twin-models" \
-    --wandb_run_name "$MODEL_DIR"
-
-
-```
-
-##### 4 Run Inference
-Inference on Wave 4 dataset of unseen persona
-
-```
-cd lbm
-MODEL_DIR = 'qwen3-0.6b-sft'
-export DATA_DIR='datasets/datasplits'
-mkdir datasets/results datasets/results/$MODEL_DIR
-
-python src/models/inference.py \
-    --adapter_path "checkpoints/$MODEL_DIR/final_sft_adapter" \
-    --test_data_path "$DATA_DIR/test_1P_5Q.jsonl" \
-    --output_file "datasets/results/$MODEL_DIR/predictions.jsonl" \
-    --batch_size 1
-```
-
-#### 5 Run Evaluation
-
-```
-cd lbm
-export MODEL_DIR='qwen3-0.6b-sft'
-python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predictions.jsonl" --metrics_path datasets/results/$MODEL_DIR/metrics.json
-```
-
-#### 5 Collect Results
-
-Final Metrics Report
-- File Path - `datasets/results/$MODEL_DIR`
-- File Name - `metrics.json`
-
 
 # Section 3 Evaluation
 #### Evaluation Metrics 
@@ -559,9 +499,152 @@ Condition 2 Model degrades in performance in terms of the overall accuracy
 - Also, If new survey data is available, we should discard the oldest waves data, and weight more importance to the recent survey results.
 
 
-# Section 6 Modelling Codes
+# Section 6 Modelling Demo
 
-Next Add graphs , report, results etc for random baseline etc
+A small, runnable POC that fine-tunes a model with fewer than 0.5B parameters on a slice of the
+task, with an eval that reports a metric against a baseline. It does not need to perform well — it
+needs to demonstrate that your end-to-end loop (data → train → eval) actually works, and that you can
+reason about results from a tiny model. Include clear run instructions.
+
+### Set Up
+#### Dataset
+I split the dataset by 500 person ids as train, val and test and then pick 
+- 8 persons from train,1 person from val and 1 person from test set
+- Then sample 20 Question from train and validation
+- Test set - I used all the **wave 4 Q&A** for the 1 test set person
+
+- **Model training Dataset statistics** 
+    | Dataset | Number of Persons sampled | Number of Questions Sampled Per Person | Total Number of Rows (Q&A)
+    |------|-------------|------------|----|
+    | Train | 8 | 20 | 160
+    | Val   | 1 | 20 | 20 
+    | Test  | 1 | 84 | 84
+
+
+#### Context Processing 
+I used the context length of 4096 for experimentation. And token budget is allocated as follows.
+
+1. System Prefix 
+    -  This is fed into the content of "system" prompt at the start
+    - "You are a digital twin. Here is the user's historical survey data containing demographic and behavioral questions and corresponding answers:\n\n" 
+    - All tokens are used
+2. Historical Q&A 
+    - This is fed into the content of "system" prompt after System prefix
+    - Truncate its token from the left based on 4096 as
+
+        `4096 - Number of tokens of(System Prefix + User Question + Target Answer + 30)` where 30 is for some chat template tokens 
+3. User Question  
+    -  This is fed into the content of "user" prompt
+    - All tokens are used
+4. Target Answers  
+    - This is appended at the end
+    - All tokens are used
+
+### Model Used
+`Qwen3 0.6b`
+
+### Hyperparameters Set up
+See Section 2 subsection Key Hyperparameters
+
+### Running Training,Inferenece and Evals
+
+#### LLM SFT Model Training 
+
+```
+cd lbm
+
+export MODEL_DIR='qwen3-0.6b-sft'
+rm -rf checkpoints/$MODEL_DIR
+mkdir checkpoints checkpoints/$MODEL_DIR  checkpoints/$MODEL_DIR/logs
+
+export DATA_DIR='datasets/datasplits'
+mkdir datasets/datasplits
+mkdir datasets/results datasets/results/$MODEL_DIR
+
+accelerate launch --num_processes 1 src/models/train.py \
+    --train_data_path ""$DATA_DIR"/train_10P_5Q.jsonl" \
+    --val_data_path "datasets/datasplits/val_1P_5Q.jsonl" \
+    --output_dir "checkpoints/$MODEL_DIR" \
+    --model_id "Qwen/Qwen3-0.6B" \
+    --batch_size 2 \
+    --grad_accum 4 \
+    --epochs 1 \
+    --learning_rate 2e-5 \
+    --lora_r 16 \
+    --lora_alpha 32 \
+    --wandb_project "LBM-twin-models" \
+    --wandb_run_name "$MODEL_DIR"
+
+
+```
+
+##### Run Inference
+Inference on Wave 4 dataset of unseen persona
+
+```
+cd lbm
+MODEL_DIR = 'qwen3-0.6b-sft'
+export DATA_DIR='datasets/datasplits'
+mkdir datasets/results datasets/results/$MODEL_DIR
+
+python src/models/inference.py \
+    --adapter_path "checkpoints/$MODEL_DIR/final_sft_adapter" \
+    --test_data_path "$DATA_DIR/test_1P_5Q.jsonl" \
+    --output_file "datasets/results/$MODEL_DIR/predictions.jsonl" \
+    --batch_size 1
+```
+
+#### Run Evaluation
+
+```
+cd lbm
+export MODEL_DIR='qwen3-0.6b-sft'
+python src/models/evaluate.py --predictions "datasets/results/$MODEL_DIR/predictions.jsonl" --metrics_path datasets/results/$MODEL_DIR/metrics.json
+```
+
+#### Evaluation Report
+
+Final Metrics Report
+- File Path - `datasets/results/$MODEL_DIR`
+- File Name - `metrics.json`
+
+
+
+### Sample Evaluation Results
+--- OVERALL ---
+Total Evaluated  : 80
+Exact Match Acc  : 10.00% (Model)
+
+--- MATRIX ---
+Total Evaluated  : 67
+Exact Match Acc  : 8.96% (Model)
+Mean Abs Dev     : 1.6667 (Model)
+Mean Abs Dev     : 1.5556 (Random Baseline)
+Set 2 W. Kappa  : 0.4179 (Model)
+Set 3 W. Kappa  : 0.2936 (Random Baseline)
+
+--- MC_ORDINAL ---
+Total Evaluated  : 8
+Exact Match Acc  : 12.50% (Model)
+Mean Abs Dev     : 0.8000 (Model)
+Mean Abs Dev     : 0.8000 (Random Baseline)
+Set 2 W. Kappa  : 0.5312 (Model)
+Set 3 W. Kappa  : 0.6667 (Random Baseline)
+Set 1 W. Kappa  : 0.7619 (Human Ceiling)
+
+--- MC_BINARY ---
+Total Evaluated  : 5
+Exact Match Acc  : 20.00% (Model)
+Mean Abs Dev     : 0.6667 (Model)
+Mean Abs Dev     : 0.6667 (Random Baseline)
+Set 2 Kappa     : -0.5000 (Model)
+Set 3 Kappa     : 0.0000 (Random Baseline)
+Set 1 Kappa     : 0.0000 (Human Ceiling)
+
+
+Next Add wandb graphs 
+
+
 
 #### Todos/ Next Steps
 

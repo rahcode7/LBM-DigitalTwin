@@ -6,8 +6,8 @@ from accelerate import Accelerator
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments,Trainer
 from peft import LoraConfig, get_peft_model
 #from trl import DataCollatorForCompletionOnlyLM
-from AmitySolutions.src.models.dataloader_old import get_qwen_dataloaders
-from transformers import DataCollatorWithPadding
+from dataloader import get_qwen_dataloaders
+from transformers import DataCollatorForSeq2Seq,DataCollatorWithPadding
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument("--wandb_run_name", type=str, default="qwen3-0.6b-sft")
     
     # Training Hyperparameters
-    parser.add_argument("--max_seq_length", type=int, default=2048, help="Maximum sequence length")
+    parser.add_argument("--max_seq_length", type=int, default=4096, help="Maximum sequence length")
     parser.add_argument("--batch_size", type=int, default=2, help="Per-device train and eval batch size")
     parser.add_argument("--grad_accum", type=int, default=8, help="Gradient accumulation steps")
     parser.add_argument("--learning_rate", type=float, default=2e-5, help="Learning rate")
@@ -67,9 +67,10 @@ if __name__ == "__main__":
     train_dataset, val_dataset = get_qwen_dataloaders(
         train_path=args.train_data_path, 
         val_path=args.val_data_path, 
-        tokenizer=tokenizer
+        tokenizer=tokenizer,
+        max_seq_length=MAX_INPUT_TOKENS
     )
-    
+
     # 3. Initialize Base Model
     if accelerator.is_main_process:
         print(f"Loading Base Model: {args.model_id}...")
@@ -101,10 +102,13 @@ if __name__ == "__main__":
    
 
     # 5. Padding collator
-    collator = DataCollatorWithPadding(
-        tokenizer=tokenizer,
-        padding=True
-    )
+    collator = DataCollatorForSeq2Seq(
+    tokenizer=tokenizer,
+    padding="longest",
+    label_pad_token_id=-100,
+    return_tensors="pt"
+)
+
 
     # 6. Training Arguments
     training_args = TrainingArguments(
@@ -114,10 +118,10 @@ if __name__ == "__main__":
         gradient_accumulation_steps=GRAD_ACCUM_STEPS,
         num_train_epochs=NUM_EPOCHS,
         eval_strategy="steps",
-        eval_steps=1,
+        eval_steps=5,
         logging_steps=1,
         save_strategy="steps",
-        save_steps=1,
+        save_steps=5,
         save_total_limit=2,
         learning_rate=LEARNING_RATE,
         weight_decay=0.01,
