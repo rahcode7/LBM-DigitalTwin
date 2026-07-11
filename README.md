@@ -485,9 +485,9 @@ Following artifacts should be maintained for a model for comparing model perform
 - Model Metrics Reports - Measuring model performance on accuracy and reliability for all the model versions till date
 
 ### Measuring model drifts
-TODO
+Monitor Model Perforamnce on accuracy metrics. If the performance drop model has drifted.
+We can compare the distribution of our current trainign data and new inferece data's question set and see if there are differences.
 
-Concept Drift
 
 ### Governance and Ethics
 As the LBM can be susceptible to stereotying, ethically, it should not be used for user profiling ike Credit/Loan applications, Resume Screening.
