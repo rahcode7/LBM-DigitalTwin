@@ -223,7 +223,7 @@ def build_test_split(pids: List[str], df: pd.DataFrame) -> List[Dict[str, Any]]:
                 "pid": pid,
                 "question_id": target_qa['question_id'],
                 "question_type": target_qa['question_type'],
-                "system_context": f"You are a digital twin. Here is the user's historical survey data containing demographic and behavioral questions and corresponding answers :\n\n {context_text}",
+                "system_context": f"{context_text}",
                 "user_question": f"Based on the historical data, how would the user answer this future question? \nQuestion: '{target_qa['question_text']}'\n Options: [{opt_str}]",
                 "target_answer": target_qa['answer'],
                 "question_cnts_context":qcnts
@@ -246,7 +246,7 @@ if __name__ == "__main__":
     DEMOGRAPHIC_QIDS = {"QID11","QID12","QID13","QID14","QID15","QID16","QID17","QID19","QID18","SAVR","QID20","QID21","QID22","QID24","QID23"}  # Total 14 Demographic Questions
 
     print("Loading dataset...")
-    DATASET_PATH = "/Users/rahulmehta/Desktop/Job2026/Companies/AmitySolutions/datasets"
+    DATASET_PATH = "../datasets"
    
     df = pd.read_json(os.path.join(DATASET_PATH, "wave_splits/wave_splits.json"), lines=True)
     df = df.sample(10)
@@ -279,6 +279,6 @@ if __name__ == "__main__":
 
     # Save splits
     datasplits_dir = os.path.join(DATASET_PATH, "datasplits")
-    save_jsonl(train_dataset, filepath=os.path.join(datasplits_dir, "train_8P_5Q.jsonl"))
-    save_jsonl(val_dataset, filepath=os.path.join(datasplits_dir, "val_1P_5Q.jsonl"))
-    save_jsonl(test_dataset, filepath=os.path.join(datasplits_dir, "test_1P_5Q.jsonl"))
+    save_jsonl(train_dataset, filepath=os.path.join(datasplits_dir, "train_8P_Q.jsonl"))
+    save_jsonl(val_dataset, filepath=os.path.join(datasplits_dir, "val_1P_Q.jsonl"))
+    save_jsonl(test_dataset, filepath=os.path.join(datasplits_dir, "test_1P_Q.jsonl"))

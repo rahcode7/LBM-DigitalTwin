@@ -54,10 +54,6 @@ def format_and_tokenize_chatml(example, tokenizer: PreTrainedTokenizer, max_seq_
 
     prompt_ids = tokenizer(prompt_text, add_special_tokens=False)["input_ids"]
 
-    # 6. Failsafe Truncation (Just in case tokenizer quirks push it 1-2 tokens over)
-    # if len(prompt_ids) > max_prompt_len:
-    #     prompt_ids = prompt_ids[-max_prompt_len:]
-
     # 7. Final Concatenation and Manual Masking
     input_ids = prompt_ids + answer_ids
     attention_mask = [1] * len(input_ids)

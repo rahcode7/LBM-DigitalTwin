@@ -624,7 +624,7 @@ For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to m
 
 We can compare the accuracy of the questions w.r.t the human ceiling and then comparing it with random baselines and the model performance.
 
-We can compare the reliability of the answer w.r.t the human ceiling and then comparing it with random baselines and the model performance.
+We can compare the reliability of the answer w.r.t the human ceiling and then compare it with random baselines and the model performance.
 
 
 | Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
