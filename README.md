@@ -7,6 +7,8 @@ Designing a Large Behavior Model for the following problem statement
 
 # Section 1 Data Exploration 
 
+Code available at `src/models/EDA.ipynb`
+
 Dataset Link - https://huggingface.co/datasets/LLM-Digital-Twin/Twin-2K-500
 
 #### Dataset Usage
@@ -284,7 +286,7 @@ We use the text field `wave1_3_persona_json` as the main field to create the use
 
 
 #### Chosen Context Length
-I choose 4096 context length that can have lower training times and can fit a GPU well.
+I choose 4096 context length that can have lower training times and can fit a small GPU with 16GB well and doesn't leads to OOM error while training.
 Also, if we have summaries available, it should be able to easily fit in these context windows.
 
 ### 2.4 Modelling Techniques
@@ -333,11 +335,6 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Gradient Checkpointing** | Enabled | 
 | **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) |
 
-
-
-  Thinking Mode - disabled
-
-    Copy hyperparameters
 - Advantages - Higher Model performance than prompting as the model weights will be altered and will learn the user's behavior representations from the dataset, Model retraining capabilities which is not available in just the baseline prompting model.
 - Disadavantages 
     - Higher Set up cost : Requires higher investment compared to prompting in terms of expertise in LLM SFT Fine tuning, GPU and Infrastructure requirements for hosting the model
@@ -368,6 +365,18 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 
 ### Running LLM Training & Inference Jobs
 Machine Used - `Linux T4 16GB`
+
+
+1. Download Repository
+```
+git clone https://github.com/rahcode7/LBM-DigitalTwin.git
+```
+
+2. Get datasets
+
+```
+run src/models/EDA.ipynb that download wave_splits dataset from HuggingFace and stores in `datasets/wave_splits` folder
+```
 
 #### 1. Install Packages
 ```
@@ -646,7 +655,8 @@ Bugs (Didnt got time to fix those):
 **2. Drift Detection in such behavior models**
 
 
-###### References
+# References
+
 https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them
 
 https://arxiv.org/pdf/2606.05336
@@ -656,5 +666,7 @@ https://github.com/microsoft/LLMLingua
 https://numiqo.com/tutorial/cohens-kappa
 
 https://numiqo.com/tutorial/weighted-cohens-kappa
+
+https://arxiv.org/pdf/2505.17479
 
 
