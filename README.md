@@ -565,11 +565,11 @@ mkdir datasets/datasplits
 mkdir datasets/results datasets/results/$MODEL_DIR
 
 accelerate launch --num_processes 1 src/models/train.py \
-    --train_data_path ""$DATA_DIR"/train_10P_5Q.jsonl" \
-    --val_data_path "datasets/datasplits/val_1P_5Q.jsonl" \
+    --train_data_path ""$DATA_DIR"/train_8P_Q.jsonl" \
+    --val_data_path "datasets/datasplits/val_1P_Q.jsonl" \
     --output_dir "checkpoints/$MODEL_DIR" \
     --model_id "Qwen/Qwen3-0.6B" \
-    --batch_size 2 \
+    --batch_size 1 \
     --grad_accum 4 \
     --epochs 1 \
     --learning_rate 2e-5 \
@@ -592,7 +592,7 @@ mkdir datasets/results datasets/results/$MODEL_DIR
 
 python src/models/inference.py \
     --adapter_path "checkpoints/$MODEL_DIR/final_sft_adapter" \
-    --test_data_path "$DATA_DIR/test_1P_5Q.jsonl" \
+    --test_data_path "$DATA_DIR/test_1P_Q.jsonl" \
     --output_file "datasets/results/$MODEL_DIR/predictions.jsonl" \
     --batch_size 1
 ```
@@ -634,8 +634,8 @@ We can compare the reliability of the answer w.r.t the human ceiling and then co
 | **MC (Binary)** | 45 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
 
 Bugs (Didnt got time to fix those): 
-1. Matrix answer not mapping to predictions.jsonl 
-2. Transformation of the text answer to a numerical scale for computing Kappa scores,
+1. Matrix answers not mapping to predictions.jsonl  and not reported
+2. Transformation of the text answer to a numerical scale for computing Kappa scores for certain questions
 
 
 #### Todos/ Next Steps
