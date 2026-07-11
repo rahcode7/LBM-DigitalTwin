@@ -117,7 +117,7 @@ I filtered the wave 4 dataset which contains 131,712 Q&A pairs rows.
 - Filter 2 I also dropped questions where both Wave 1 to Wave3 and Wave 4 answer are None.
 There were around 10,290 rows found which belonged to the TE (6,174) rows and Slider Question types (4,116) rows
 
-After apply filter 1 and filter 2, we are left with 119,364 Q&A rows answered by 500 participants in Wave 4 for human test-retest evaluation dataset.
+After apply filter 1 and filter 2, we are left with 119,364 Q&A rows answered by 2058 participants in Wave 4 for human test-retest evaluation dataset.
 
 The statistics of the dataset by quesion type is as following
 |  Question Type   | Number of Questions 
@@ -246,7 +246,7 @@ The dataset doesn't contain even number of question per category. Cognitive test
 ### Limitations
 1. Unavailabilty of Real World Bheavior Dataset - Actual Dataset represent users answers in a survey setting, while their actual behavior like purchases, which can be different is missing. This actual data can be extremely valuable to predict their future behavior.
 
-2. Small Sample Size - 500 people is a very small sample size to simulate the human behavior 
+2. Small Sample Size - 2058 people is a very small sample size to simulate the human behavior 
 of the actual population which can be millions of people. (For Example, extrapolating to 1 Million people means that this dataset represent only 0.05 percent of the actual population) 
 
 # Section 2 Modelling Strategy
@@ -513,8 +513,8 @@ reason about results from a tiny model. Include clear run instructions.
 
 ### Set Up
 #### 1. Dataset
-I split the dataset by 500 person ids as train, val and test and then pick 
-- 8 persons from train,1 person from val and 1 person from test set
+I sample 10 persons from the dataset of 2058 person ids
+- And then sample 8 persons to train,1 person to val and 1 person to test set
 - Then sample 20 Question from train and validation
 - Test set - I used all the **wave 4 Q&A** for the 1 test set person
 
