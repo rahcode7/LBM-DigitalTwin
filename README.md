@@ -309,29 +309,29 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     - **Demographic data exclusion for loss computation** - As Demographic Q&A are not a behavioral trait, we should exclude it for optimizing loss, and use only input data for training. To implement, mask these tokens as -100.
 - Key Hyperparameters
  
-| Hyperparameter | Used Value | Description |
-|---------------|------------------:|-------------|
-| **Base Model** |Qwen/Qwen3-0.6B | Decoder-only transformer used as the foundation model. |
-| **Thinking Molde** |False | Just emits final answer |
+| Hyperparameter | Used Value | 
+|---------------|------------------:|
+| **Base Model** |Qwen/Qwen3-0.6B | 
+| **Thinking Molde** |False | 
 | **Fine-Tuning Method** | LoRA | Parameter-efficient fine-tuning by updating low-rank adapter matrices only. |
-| **LoRA Rank (`r`)** | 8 | Controls the capacity of the LoRA adapters. Higher values increase trainable parameters. |
-| **LoRA Alpha (`lora_alpha`)** | 16 | Scaling factor for LoRA updates. Commonly set to `2 × r`. |
-| **LoRA Dropout** | 0.05 | Dropout applied to LoRA layers to reduce overfitting. |
-| **Target Modules** | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` | Apply LoRA to both attention and MLP layers for best adaptation. |
-| **Learning Rate** | 2e-5 | Initial learning rate for LoRA parameters. |
-| **LR Scheduler** | Cosine | Smoothly decays the learning rate during training. |
-| **Warmup Ratio** | 0.10 | Warmup for the first 10% of training steps. |
-| **Optimizer** | AdamW | Optimizer with decoupled weight decay. |
-| **Weight Decay** | 0.01 | Regularization to reduce overfitting. |
-| **Number of Epochs** | 3 | Train until validation loss converges. |
-| **Per-Device Batch Size** | 1 | Depends on GPU memory and context length. |
-| **Gradient Accumulation Steps** | 4 | Increases the effective batch size without additional GPU memory. |
-| **Effective Batch Size** | 4 | Product of per-device batch size × gradient accumulation × number of GPUs (1) |
-| **Maximum Sequence Length** | 4,096 tokens | Depends on available GPU memory and average participant history length. |
-| **Loss Function** | Cross-Entropy Loss | Predict the target answer tokens. |
-| **Mixed Precision** | BF16 (preferred) / FP16 | Reduces GPU memory usage and speeds up training. |
-| **Gradient Checkpointing** | Enabled | Trades additional computation for lower memory usage. |
-| **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) | Produces deterministic predictions for behavioral evaluation. |
+| **LoRA Rank (`r`)** | 16 | 
+| **LoRA Alpha (`lora_alpha`)** | 32 | 
+| **LoRA Dropout** | 0.05 | 
+| **Target Modules** | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` | 
+| **Learning Rate** | 2e-5 | 
+| **LR Scheduler** | Cosine | 
+| **Warmup Ratio** | 0.10 | 
+| **Optimizer** | AdamW | 
+| **Weight Decay** | 0.01 | 
+| **Number of Epochs** | 1 | 
+| **Per-Device Batch Size** | 1 | 
+| **Gradient Accumulation Steps** | 4 | 
+| **Effective Batch Size** | 4 | 
+| **Maximum Sequence Length** | 4,096 tokens | 
+| **Loss Function** | Cross-Entropy Loss | 
+| **Mixed Precision** | FP16 (as its older Nvidia architecture) | 
+| **Gradient Checkpointing** | Enabled | 
+| **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) |
 
 
 
