@@ -401,7 +401,7 @@ For prototyping, the dataset is as following
 - Test  = 1 person * 84  Questions from Wave 4 = 84  Test rows
 - Both the training dataset and validation test set strictly contains Q&A from Wave1 to Wave 3. We strictly keep the Wave4 dataset only for test set and that too for unseen users which are not seen during training.
 - Prepare this data as   
-        ``` python src/models/data-prep.py ```
+        ``` python src/models/data_splits.py ```
 
 
 # Section 3 Evaluation
