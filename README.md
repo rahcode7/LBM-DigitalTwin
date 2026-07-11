@@ -639,8 +639,9 @@ We can compare the reliability of the answer w.r.t the human ceiling and then co
 | **MC (Binary)** | 45 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
 
 Bugs (Didnt got time to fix those): 
-1. Matrix answers not mapping to predictions.jsonl and not reported
-2. Transformation of the text answer to a numerical scale for computing Kappa scores for certain questions
+1. Not all answers are getting calculated in the metrics above, so the numbers are not totally correct.
+2. Matrix answers not mapping to predictions.jsonl and not reported
+3. Transformation of the text answer to a numerical scale for computing Kappa scores for certain questions
 
 
 #### Todos/ Next Steps
