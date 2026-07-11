@@ -362,12 +362,8 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 
 | Risk | Description | Mitigation |
 |------|-------------|------------|
-| **Data Leakage** | The model may inadvertently learn from Wave 4 responses or summaries containing future information, leading to overly optimistic evaluation results. | Strict participant-level and temporal data split. Use only Waves 1–3 for training and validation. Exclude all Wave 4 responses, summaries, and derived personas from training. |
-| **Information Loss from Compression** | Persona summaries or compressed prompts may omit behavioral signals necessary for accurate prediction. | Compare compressed and full-context approaches, and retrieve the most relevant historical Q&A alongside summaries. |
-| **Question Type Imbalance** | Multiple-choice questions dominate the dataset, while Matrix, Text Entry, and Database questions are relatively scarce. | Use balanced sampling, weighted losses, or report performance separately for each question type in addition to overall metrics. |
-| **Overfitting during Fine-Tuning** | The model may fit the training participants too closely, reducing generalization to unseen participants or future responses. | Apply LoRA/QLoRA, weight decay, dropout, early stopping, validation monitoring, and checkpoint selection based on validation performance. |
-| **Hallucinated Answer Generation** | Generative models may produce responses outside the valid answer space (e.g., unsupported options for multiple-choice questions). | Constrain decoding to valid answer choices or rank candidate answers instead of free-text generation whenever possible. |
-
+| **Target Leakage** | The model may inadvertently learn from Wave 4 responses or summaries containing future information,  | Personal level splits and usage of only Waves 1–3 for training and validation. I Excluded all Wave 4 data for training. |
+| **Question Type Imbalance** | Multiple-choice questions dominate the dataset, while Matrix type and TE type are low in numbers, this will train the model that excels the MC Question types | Used stratified sampling by Question Type |
 
 
 ### Running LLM Training & Inference Jobs
@@ -627,14 +623,14 @@ We can compare the accuracy of the questions w.r.t the human ceiling and then co
 We can compare the reliability of the answer w.r.t the human ceiling and then compare it with random baselines and the model performance.
 
 
-| Question Type | # Evaluated | Human Ceiling (Normalized Accuracy) | Model (Normalized Accuracy) | Random Baseline (Normalized Accuracy) | Human Agreement | Model Agreement | Random Agreement |
-|---------------|------------:|------------------------------------:|----------------------------:|--------------------------------------:|----------------:|----------------:|-----------------:|
-| **Overall** | **53** | **96.00%** | **44.00%** | **52.00%** | – | – | – |
-| **MC (Ordinal)** | 8 | **90.00%** | **10.00%** | **80.00%** | **Weighted κ = 0.6667** | **Weighted κ = 0.0000** | **Weighted κ = 0.6667** |
+| Question Type | # Evaluated | Human Ceiling (Exact Match) | Model (Exact Match) | Random Baseline (Exact Match) | Human Agreement | Model Agreement | Random Agreement |
+|---------------|------------:|----------------------------:|--------------------:|------------------------------:|----------------:|----------------:|-----------------:|
+| **Overall** | **53** | **80.00%** | **40.00%** | **40.00%** | **Weighted Avg. κ = 0.9497** | **Weighted Avg. κ = 0.0000** | **Weighted Avg. κ = 0.1006** |
+| **MC (Ordinal)** | 8 | **50.00%** | **0.00%** | **50.00%** | **Weighted κ = 0.6667** | **Weighted κ = 0.0000** | **Weighted κ = 0.6667** |
 | **MC (Binary)** | 45 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
 
 Bugs (Didnt got time to fix those): 
-1. Matrix answers not mapping to predictions.jsonl  and not reported
+1. Matrix answers not mapping to predictions.jsonl and not reported
 2. Transformation of the text answer to a numerical scale for computing Kappa scores for certain questions
 
 
