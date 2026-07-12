@@ -26,9 +26,9 @@ The statistics are as follows  -
 - Total Questions Answered :  353929 
 - Unique Number of Persons : 2058
 - Total number of Duplicates Q&A rows Found - 0
-- Total Uniques Questions Asked - 171. The following table shows a breakdown of Question by different block names - 
+- Total Uniques Parent Questions Asked - 171. The following table shows a breakdown of Question by different block names - 
 
-| Block Name                      | Unique Question Counts | Question Types          | 
+| Block Name                      | Unique Parent Question Counts | Question Types          | 
 |---------------------------------|-----------------------:|-------------------------|
 | Cognitive tests                 | 69                     | DB, MC, TE              |
 | Personality                     | 49                     | DB, MC, Matrix, TE      |
