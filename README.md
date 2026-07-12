@@ -303,7 +303,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
     - Lower model performance 
     - Less behavioral personalization -  model relies on internal representation which doesn't represent the learned user behavior of our dataset.
 
-#### 2. Supervised Fine Tuning (SFT)
+#### 2. Supervised Fine Tuning (SFT) (Currently Implemeneted
 - Here we fine tune an LLM model on a past survey dataset 
 - Objective Function
     - **Loss Function** - Cross Entropy Loss Function
@@ -335,6 +335,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Gradient Checkpointing** | Enabled | 
 | **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) |
 
+- Decoding Strategy as Greedy as we are solving a deterministic task and we want model to be less creative so beam search is not chosen
 - Advantages - Higher Model performance than prompting as the model weights will be altered and will learn the user's behavior representations from the dataset, Model retraining capabilities which is not available in just the baseline prompting model.
 - Disadavantages 
     - Higher Set up cost : Requires higher investment compared to prompting in terms of expertise in LLM SFT Fine tuning, GPU and Infrastructure requirements for hosting the model
@@ -363,7 +364,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Question Type Imbalance** | Multiple-choice questions dominate the dataset, while Matrix type and TE type are low in numbers, this will train the model that excels the MC Question types | Used stratified sampling by Question Type |
 
 
-### Running LLM Training & Inference Jobs
+### Running SFT LLM Training & Inference Jobs
 Machine Used - `Linux T4 16GB`
 
 
