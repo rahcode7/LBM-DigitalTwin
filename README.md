@@ -152,7 +152,7 @@ As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in follo
 
 - BlockWise Evaluation Metrics (Multiple Choice (MC) - Ordinary)
 
-    | Block Name | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    | Block Name | Accuracy | Unique Questions | Total Responses | % of Total Responses |
     |------------|-------------------------:|-----------------:|----------------:|---------------------:|
     | WTA/WTP Thaler - WTP noncertainty | 93.05% | 1 | 673 | 4.09% |
     | WTA/WTP Thaler problem - WTP certainty | 89.98% | 1 | 712 | 4.32% |
@@ -628,15 +628,16 @@ Final Metrics Report
 For evaluation of predictions on test, I also fetched the past waves1_3 Q&A to measure the test-retest accuracy and reliability w.r.t the current wave 4 answers. Only the Q&A which were found in previouse wave1_3 are subsetted and all the metrics are reported for those commoon Q&A. So out of 84 Q&A, I found 53 Q&A which were common in both.
 
 We can compare the accuracy of the questions w.r.t the human ceiling and then comparing it with random baselines and the model performance.
-
 We can compare the reliability of the answer w.r.t the human ceiling and then compare it with random baselines and the model performance.
 
+For Matrix Questions and MC Ordinal Question we compute the accuracy as = 1 - Mean Absolute Deviation and for MC Binary its calculated as exact match.
 
-| Question Type | # Evaluated | Human Ceiling (Exact Match) | Model (Exact Match) | Random Baseline (Exact Match) | Human Agreement | Model Agreement | Random Agreement |
-|---------------|------------:|----------------------------:|--------------------:|------------------------------:|----------------:|----------------:|-----------------:|
-| **Overall** | **53** | **80.00%** | **40.00%** | **40.00%** | **Weighted Avg. κ = 0.9497** | **Weighted Avg. κ = 0.0000** | **Weighted Avg. κ = 0.1006** |
-| **MC (Ordinal)** | 8 | **50.00%** | **0.00%** | **50.00%** | **Weighted κ = 0.6667** | **Weighted κ = 0.0000** | **Weighted κ = 0.6667** |
-| **MC (Binary)** | 45 | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
+
+| Question Type | # Evaluated | Metric |  Human Ceiling  | Model | Random Baseline | Human Agreement | Model Agreement | Random Agreement |
+|---------------|------------:|--------:|----------------------------:|--------------------:|------------------------------:|----------------:|----------------:|-----------------:|
+| **Overall** | **53** | Weighted Accuracy |  **80.00%** | **40.00%** | **40.00%** | **Weighted Avg. κ = 0.9497** | **Weighted Avg. κ = 0.0000** | **Weighted Avg. κ = 0.1006** |
+| **MC (Ordinal)** | 8 | 1 - Mean absolute deviation |**50.00%** | **0.00%** | **50.00%** | **Weighted κ = 0.6667** | **Weighted κ = 0.0000** | **Weighted κ = 0.6667** |
+| **MC (Binary)** | 45 | Exact Match | **100.00%** | **66.67%** | **33.33%** | **κ = 1.0000** | **κ = 0.0000** | **κ = 0.0000** |
 
 Bugs (Didnt got time to fix those): 
 1. Not all answers are getting calculated in the metrics above, so the numbers are not totally correct.
