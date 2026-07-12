@@ -148,7 +148,7 @@ As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in follo
     | Question Type | Metric | Test-Retest Accuracy  | Number of Rows | Number of Unique Qs
     |------ | ----- | ------ | ----- |----- | 
     |Multiple Choice (MC) - Binary |  Exact Match | **83.27%** | 92,610 | 77
-    |Multiple Choice (MC) - Ordinary |  Mean Absolute Deviation | **83.80%** | 16,464 | 98 
+    |Multiple Choice (MC) - Ordinary |  Accuracy = 1 - Mean Absolute Deviation | **83.80%** | 16,464 | 98 
 
 - BlockWise Evaluation Metrics (Multiple Choice (MC) - Ordinary)
 
@@ -177,7 +177,7 @@ As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in follo
 
 -  BlockWise Evaluation Metrics (Multiple Choice (MC) - Ordinary)
     
-    | Block Name | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    | Block Name | Accuracy | Unique Questions | Total Responses | % of Total Responses |
     |------------|-------------------------:|-----------------:|----------------:|---------------------:|
     | Anchoring - redwood low | 93.80% | 1 | 1,049 | 1.13% |
     | Product Preferences - Pricing | 83.89% | 40 | 82,320 | 88.89% |
@@ -197,7 +197,7 @@ As we have 2 types Multiple Choice (MC) and Matrix Type, I handled them in follo
 As bipolar is also a range of answers as mentioned in the definiton, I considered them same as likert scale.
 For these questions, I subset their QuestionId from the `question_catalog.json`. I then used their `Columns` column and convert them to likert numerical scales. Then I compute the Absolute deviation between the ground truth's number and predicted answers's and divide by range of possible answer,similar to being reported by authors as mentioned above.
     -  As there could be multiple Matrix Questions together in a list,for each
-        - Compute score for item i ` 1 - abs( ground_truth_likert_scale_number - predicted_likert_scale_number)/ `
+        - Compute score for item i ` 1 - [abs( ground_truth_likert_scale_number - predicted_likert_scale_number)/Total number of questions in that item]`
         - Take average of this score for all the items in the list diving by the number of Questions in the list
 
 - Evaluation Results for Matrix Questions
@@ -207,7 +207,7 @@ For these questions, I subset their QuestionId from the `question_catalog.json`.
 
 - Blockwise Matrix Evaluation Metrics
 
-    | Question Type | Block Name                                             | Mean Normalized Accuracy | Unique Questions | Total Responses | % of Total Responses |
+    | Question Type | Block Name                                             | Accuracy | Unique Questions | Total Responses | % of Total Responses |
     |------------|--------------------------------------------------------|-------------------------:|-----------------:|----------------:|---------------------:|
     | Matrix     | False consensus                                        | 87.44%                   | 1                | 2,058           | 20.00%               |
     | Matrix     | Non-experimental heuristics and biases                 | 86.32%                   | 2                | 4,116           | 40.00%               |
