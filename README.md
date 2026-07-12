@@ -335,7 +335,7 @@ Baseline model will be a 0 shot version of the LLM model we choose.
 | **Gradient Checkpointing** | Enabled | 
 | **Decoding Strategy (Evaluation)** | Greedy Decoding (`temperature=0`) |
 
-- Decoding Strategy as Greedy as we are solving a deterministic task and we want model to be less creative so beam search is not chosen
+- Decoding Strategy as Greedy as we are solving a deterministic task and its chooses the highest probability token and we want model to be less creative so beam search is not chosen
 - Advantages - Higher Model performance than prompting as the model weights will be altered and will learn the user's behavior representations from the dataset, Model retraining capabilities which is not available in just the baseline prompting model.
 - Disadavantages 
     - Higher Set up cost : Requires higher investment compared to prompting in terms of expertise in LLM SFT Fine tuning, GPU and Infrastructure requirements for hosting the model
