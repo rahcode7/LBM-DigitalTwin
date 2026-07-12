@@ -57,7 +57,7 @@ Where DB = Descriptive Bloc, MC = Multiple Choice, TE = Text Entry and Matrix = 
 
 For wave 4 Q&A extraction, I used the `wave4_Q_wave4_A` field of the wave_split dataset and unroll it to prepare data at Q&A-PID level
 - Total Number of Rows which represent number of Q&A answered in total - 131712
-- Total Uniques Questions Asked - 85. The following table shows a breakdown of Question by different block names - 
+- Total Uniques Parent Questions Asked - 85. Question can have subquestions as well. The following table shows a breakdown of Question by different block names - 
 
 | Block Name | Unique Question Count | Question Types |
 |------------|----------------------:|----------------|
